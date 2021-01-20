@@ -49,6 +49,7 @@
       },
       "runtime": "Nodejs10.15",
       "memorySize": 128,
+      "installDependency": false,
       "handler": "index.main",
       "vpc": {
         "vpcId": "{{env.VPC_ID}}",

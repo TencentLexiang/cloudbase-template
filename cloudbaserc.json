@@ -1,0 +1,50 @@
+{
+  "version": "2.0",
+  "envId": "lxservice-9gspyv4qf6e7e652",
+  "$schema": "https://framework-1258016615.tcloudbaseapp.com/schema/latest.json",
+  "functionRoot": "./functions",
+  "functions": [
+    {
+      "name": "get_suite_access_token",
+      "timeout": 5,
+      "envVariables": {},
+      "runtime": "Php7",
+      "params": {},
+      "handler": "index.main"
+    },
+    {
+      "name": "get_corp_info",
+      "timeout": 5,
+      "envVariables": {},
+      "runtime": "Php7",
+      "params": {},
+      "handler": "index.main"
+    },
+    {
+      "name": "suite_callback",
+      "timeout": 5,
+      "envVariables": {},
+      "runtime": "Nodejs10.15",
+      "memorySize": 128,
+      "handler": "index.main"
+    },
+    {
+      "name": "get_current_user",
+      "timeout": 5,
+      "envVariables": {},
+      "runtime": "Php7",
+      "params": {},
+      "handler": "index.main"
+    }
+  ],
+  "framework": {
+    "name": "php-starter",
+    "plugins": {
+      "function": {
+        "use": "@cloudbase/framework-plugin-function",
+        "inputs": {}
+      }
+    }
+  },
+  "region": "ap-guangzhou"
+}

@@ -1,16 +1,26 @@
 {
   "version": "2.0",
-  "envId": "lxservice-9gspyv4qf6e7e652",
+  "envId": "{{env.ENV_ID}}",
   "$schema": "https://framework-1258016615.tcloudbaseapp.com/schema/latest.json",
   "functionRoot": "./functions",
   "functions": [
     {
       "name": "get_suite_access_token",
       "timeout": 5,
-      "envVariables": {},
+      "envVariables": {
+        "LX_SUITE_ID": "{{env.LX_SUITE_ID}}",
+        "LX_SUITE_SECRET": "{{env.LX_SUITE_SECRET}}",
+        "DEFAULT_REDIS_HOST": "{{env.DEFAULT_REDIS_HOST}}",
+        "DEFAULT_REDIS_PORT": "{{env.DEFAULT_REDIS_PORT}}",
+        "DEFAULT_REDIS_PASSWORD": "{{env.DEFAULT_REDIS_PASSWORD}}"
+      },
       "runtime": "Php7",
       "params": {},
-      "handler": "index.main"
+      "handler": "index.main",
+      "vpc": {
+        "vpcId": "{{env.VPC_ID}}",
+        "subnetId": "{{env.VPC_LOGIC_ID}}"
+      }
     },
     {
       "name": "get_corp_info",
@@ -18,15 +28,32 @@
       "envVariables": {},
       "runtime": "Php7",
       "params": {},
-      "handler": "index.main"
+      "handler": "index.main",
+      "vpc": {
+        "vpcId": "{{env.VPC_ID}}",
+        "subnetId": "{{env.VPC_LOGIC_ID}}"
+      }
     },
     {
       "name": "suite_callback",
       "timeout": 5,
-      "envVariables": {},
+      "envVariables": {
+        "DEFAULT_MYSQL_HOST": "{{env.DEFAULT_MYSQL_HOST}}",
+        "DEFAULT_MYSQL_PORT": "{{env.DEFAULT_MYSQL_PORT}}",
+        "DEFAULT_MYSQL_USER": "{{env.DEFAULT_MYSQL_USER}}",
+        "DEFAULT_MYSQL_PASSWORD": "{{env.DEFAULT_MYSQL_PASSWORD}}",
+        "DEFAULT_MYSQL_DATABASE": "{{env.DEFAULT_MYSQL_DATABASE}}",
+        "DEFAULT_REDIS_HOST": "{{env.DEFAULT_REDIS_HOST}}",
+        "DEFAULT_REDIS_PORT": "{{env.DEFAULT_REDIS_PORT}}",
+        "DEFAULT_REDIS_PASSWORD": "{{env.DEFAULT_REDIS_PASSWORD}}"
+      },
       "runtime": "Nodejs10.15",
       "memorySize": 128,
-      "handler": "index.main"
+      "handler": "index.main",
+      "vpc": {
+        "vpcId": "{{env.VPC_ID}}",
+        "subnetId": "{{env.VPC_LOGIC_ID}}"
+      }
     },
     {
       "name": "get_current_user",
@@ -34,15 +61,21 @@
       "envVariables": {},
       "runtime": "Php7",
       "params": {},
-      "handler": "index.main"
+      "handler": "index.main",
+      "vpc": {
+        "vpcId": "{{env.VPC_ID}}",
+        "subnetId": "{{env.VPC_LOGIC_ID}}"
+      }
     }
   ],
   "framework": {
-    "name": "php-starter",
+    "name": "lxservice",
     "plugins": {
       "function": {
         "use": "@cloudbase/framework-plugin-function",
-        "inputs": {}
+        "inputs": {
+          "functionRootPath": "./functions"
+        }
       }
     }
   },

@@ -1,56 +1,67 @@
-const cloudBase = require('@cloudbase/node-sdk')
-const redis = require('redis')
-const mysql = require('serverless-mysql')({
-    config: {
-        host: process.env.DEFAULT_MYSQL_HOST,
-        port: process.env.DEFAULT_MYSQL_PORT,
-        database: process.env.DEFAULT_MYSQL_DATABASE,
-        user: process.env.DEFAULT_MYSQL_USER,
-        password: process.env.DEFAULT_MYSQL_PASSWORD
-    }
-})
+const cloudBase = require('@cloudbase/node-sdk');
 
-
-const app = cloudBase.init({})
+const app = cloudBase.init({});
 const db = app.database();
 
 exports.main = async (event, context) => {
     if (event.httpMethod === "POST") {
-        const body = JSON.parse(event.body)
-        await db.collection("suite_callback_logs").add(body)
+        const body = JSON.parse(event.body);
+        db.collection("lx_suite_callback_logs").add(body);
+        console.log(body);
 
-        console.log(body.action)
         if (body.action === "service/suite_ticket") {
-            const redis_client = await redis.createClient({
-                host: process.env.DEFAULT_REDIS_HOST,
-                port: process.env.DEFAULT_REDIS_PORT,
-                password: process.env.DEFAULT_REDIS_PASSWORD
-            })
-            await redis_client.setex("suite_ticket", 1200, body.attributes.suite_ticket)
-            redis_client.quit()
+            db.collection("lx_suites").doc("suite_ticket").set({
+                "value": body.attributes.suite_ticket,
+                "expires_in": 1800,
+                "created_at": new Date().getTime()
+            });
         } else if (body.action === "service/create_auth") {
-
-            let call_res = await app.callFunction({
+            let call_ref = await app.callFunction({
                 name: "get_suite_access_token"
-            })
+            });
 
-            let suite_access_token = call_res.result
-            call_res = await app.callFunction({
+            const suite_access_token = call_ref.result
+            call_ref = await app.callFunction({
                 name: "get_corp_info",
                 data: {
                     "suite_access_token": suite_access_token,
                     "auth_code": body.attributes.auth_code
                 }
-            })
-            let addSqlParams = [call_res.result.data.company_id, call_res.result.data.permanent_code]
-            await mysql.query("INSERT INTO companies(id, lexiang_uuid, permanent_code, created_at) VALUES('', ?, ?, now())", addSqlParams)
-            mysql.quit()
+            });
+            const company_id = call_ref.result.company_id;
+            const permanent_code = call_ref.result.permanent_code;
+            delete call_ref.result.company_id;
+            delete call_ref.result.permanent_code;
+            db.collection("companies").add({
+                "_id": company_id,
+                "permanent_code": permanent_code,
+                "attributes": call_ref.result,
+                "created_at": new Date().format("yyyy-MM-dd hh:mm:ss")
+            });
         } else if (body.action === "service/cancel_auth") {
-            let addSqlParams = [body.attributes.company_id]
-            await mysql.query("DELETE FROM companies WHERE lexiang_uuid = ?", addSqlParams)
-            mysql.quit()
+            db.collection("companies").doc(body.attributes.company_id).remove();
         }
     }
-    console.log("success")
-    return "success"
-};
+    return "success";
+}
+
+Date.prototype.format = function(fmt) {
+    var o = {
+        "M+" : this.getMonth()+1,                //月份
+        "d+" : this.getDate(),                    //日
+        "h+" : this.getHours(),                  //小时
+        "m+" : this.getMinutes(),                //分
+        "s+" : this.getSeconds(),                //秒
+        "q+" : Math.floor((this.getMonth()+3)/3), //季度
+        "S"  : this.getMilliseconds()            //毫秒
+    };
+    if(/(y+)/.test(fmt)) {
+        fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+    }
+    for(var k in o) {
+        if(new RegExp("("+ k +")").test(fmt)){
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+        }
+    }
+    return fmt;
+}

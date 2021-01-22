@@ -1,84 +1,86 @@
 {
   "version": "2.0",
   "envId": "{{env.ENV_ID}}",
-  "$schema": "https://framework-1258016615.tcloudbaseapp.com/schema/latest.json",
-  "functionRoot": "./functions",
-  "functions": [
-    {
-      "name": "get_suite_access_token",
-      "timeout": 5,
-      "envVariables": {
-        "LX_SUITE_ID": "{{env.LX_SUITE_ID}}",
-        "LX_SUITE_SECRET": "{{env.LX_SUITE_SECRET}}",
-        "DEFAULT_REDIS_HOST": "{{env.DEFAULT_REDIS_HOST}}",
-        "DEFAULT_REDIS_PORT": "{{env.DEFAULT_REDIS_PORT}}",
-        "DEFAULT_REDIS_PASSWORD": "{{env.DEFAULT_REDIS_PASSWORD}}"
-      },
-      "runtime": "Php7",
-      "params": {},
-      "handler": "index.main",
-      "vpc": {
-        "vpcId": "{{env.VPC_ID}}",
-        "subnetId": "{{env.VPC_LOGIC_ID}}"
-      }
-    },
-    {
-      "name": "get_corp_info",
-      "timeout": 5,
-      "envVariables": {},
-      "runtime": "Php7",
-      "params": {},
-      "handler": "index.main",
-      "vpc": {
-        "vpcId": "{{env.VPC_ID}}",
-        "subnetId": "{{env.VPC_LOGIC_ID}}"
-      }
-    },
-    {
-      "name": "suite_callback",
-      "timeout": 5,
-      "envVariables": {
-        "DEFAULT_MYSQL_HOST": "{{env.DEFAULT_MYSQL_HOST}}",
-        "DEFAULT_MYSQL_PORT": "{{env.DEFAULT_MYSQL_PORT}}",
-        "DEFAULT_MYSQL_USER": "{{env.DEFAULT_MYSQL_USER}}",
-        "DEFAULT_MYSQL_PASSWORD": "{{env.DEFAULT_MYSQL_PASSWORD}}",
-        "DEFAULT_MYSQL_DATABASE": "{{env.DEFAULT_MYSQL_DATABASE}}",
-        "DEFAULT_REDIS_HOST": "{{env.DEFAULT_REDIS_HOST}}",
-        "DEFAULT_REDIS_PORT": "{{env.DEFAULT_REDIS_PORT}}",
-        "DEFAULT_REDIS_PASSWORD": "{{env.DEFAULT_REDIS_PASSWORD}}"
-      },
-      "runtime": "Nodejs10.15",
-      "memorySize": 128,
-      "installDependency": false,
-      "handler": "index.main",
-      "vpc": {
-        "vpcId": "{{env.VPC_ID}}",
-        "subnetId": "{{env.VPC_LOGIC_ID}}"
-      }
-    },
-    {
-      "name": "get_current_user",
-      "timeout": 5,
-      "envVariables": {},
-      "runtime": "Php7",
-      "params": {},
-      "handler": "index.main",
-      "vpc": {
-        "vpcId": "{{env.VPC_ID}}",
-        "subnetId": "{{env.VPC_LOGIC_ID}}"
-      }
-    }
-  ],
   "framework": {
     "name": "lxservice",
     "plugins": {
       "function": {
         "use": "@cloudbase/framework-plugin-function",
         "inputs": {
-          "functionRootPath": "./functions"
+          "functionRootPath": "./functions",
+          "servicePaths": {
+            "get_current_user": "/get_current_user",
+            "suite_callback": "/suite_callback"
+          }
+        }
+      },
+      "database": {
+        "use": "@cloudbase/framework-plugin-database",
+        "inputs": {
+          "collections": [
+            {
+              "collectionName": "lx_suite_callback_logs",
+              "createIndexes": [
+                {
+                  "name": "lx_suite_callback_logs_action_index",
+                  "unique": false,
+                  "keys": [
+                    {
+                      "name": "action",
+                      "direction": "1"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "collectionName": "lx_suites"
+            },
+            {
+              "collectionName": "companies"
+            }
+          ]
         }
       }
     }
   },
-  "region": "ap-guangzhou"
+  "region": "ap-guangzhou",
+  "functionRoot": "./functions",
+  "functions": [
+    {
+      "name": "get_suite_access_token",
+      "runtime": "Nodejs10.15",
+      "handler": "index.main",
+      "timeout": 5,
+      "memorySize": 128,
+      "envVariables": {
+        "LX_SUITE_ID": "{{env.LX_SUITE_ID}}",
+        "LX_SUITE_SECRET": "{{env.LX_SUITE_SECRET}}",
+        "LX_API_URL": "{{env.LX_API_URL}}"
+      },
+      "installDependency": false
+    },
+    {
+      "name": "suite_callback",
+      "runtime": "Nodejs10.15",
+      "handler": "index.main",
+      "timeout": 5,
+      "memorySize": 128,
+      "envVariables": {
+        "LX_SUITE_ID": "{{env.LX_SUITE_ID}}"
+      },
+      "installDependency": false
+    },
+    {
+      "name": "get_corp_info",
+      "runtime": "Nodejs10.15",
+      "handler": "index.main",
+      "timeout": 5,
+      "memorySize": 128,
+      "envVariables": {
+        "LX_API_URL": "{{env.LX_API_URL}}"
+      },
+      "installDependency": false
+    }
+  ]
 }

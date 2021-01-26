@@ -16,18 +16,13 @@ exports.main = async (event, context) => {
                 "created_at": new Date().getTime()
             });
         } else if (body.action === "service/create_auth") {
-            let call_ref = await app.callFunction({
-                name: "get_suite_access_token"
-            });
-
-            const suite_access_token = call_ref.result
-            call_ref = await app.callFunction({
+            const call_ref = await app.callFunction({
                 name: "get_corp_info",
                 data: {
-                    "suite_access_token": suite_access_token,
                     "auth_code": body.attributes.auth_code
                 }
             });
+            console.log(call_ref);
             const company_id = call_ref.result.company_id;
             const permanent_code = call_ref.result.permanent_code;
             delete call_ref.result.company_id;

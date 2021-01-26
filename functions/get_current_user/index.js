@@ -8,7 +8,7 @@ exports.main = async(event, context) => {
     const user = auth.currentUser;
     console.log(user);
     if (!user) {
-        redirect_to_login(company_id);
+        return redirect_to_login(company_id);
     }
 
     return "ok";

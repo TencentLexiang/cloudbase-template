@@ -48,7 +48,6 @@
       }
     }
   },
-  "region": "ap-guangzhou",
   "functionRoot": "./functions",
   "functions": [
     {
@@ -111,5 +110,6 @@
       },
       "installDependency": false
     }
-  ]
+  ],
+  "region": "ap-guangzhou"
 }

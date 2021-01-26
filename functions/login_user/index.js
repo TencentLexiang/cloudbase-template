@@ -23,7 +23,7 @@ exports.main = async(event, context) => {
             return response.data.data;
         }
     );
-    
+    console.log(user_info);
     if (!user_info) {
         return {
             "code": 401,
@@ -55,6 +55,7 @@ exports.main = async(event, context) => {
     } else {
         user_id = user.data[0]._id;
     }
+    
     return {
         "code": 0,
         "msg": "ok",

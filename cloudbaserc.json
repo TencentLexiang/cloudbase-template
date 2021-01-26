@@ -10,6 +10,7 @@
           "functionRootPath": "./functions",
           "servicePaths": {
             "get_current_user": "/get_current_user",
+            "login_user": "/login_user",
             "suite_callback": "/suite_callback"
           }
         }
@@ -38,6 +39,9 @@
             },
             {
               "collectionName": "companies"
+            },
+            {
+              "collectionName": "users"
             }
           ]
         }
@@ -78,6 +82,31 @@
       "timeout": 5,
       "memorySize": 128,
       "envVariables": {
+        "LX_API_URL": "{{env.LX_API_URL}}"
+      },
+      "installDependency": false
+    },
+    {
+      "name": "get_current_user",
+      "runtime": "Nodejs10.15",
+      "handler": "index.main",
+      "timeout": 5,
+      "memorySize": 128,
+      "envVariables": {
+        "LX_SUITE_ID": "{{env.LX_SUITE_ID}}",
+        "PAGE_URL": "{{env.PAGE_URL}}",
+        "LX_AUTH_URL": "{{env.LX_AUTH_URL}}"
+      },
+      "installDependency": false
+    },
+    {
+      "name": "login_user",
+      "runtime": "Nodejs10.15",
+      "handler": "index.main",
+      "timeout": 5,
+      "memorySize": 128,
+      "envVariables": {
+        "ENV_ID": "{{env.ENV_ID}}",
         "LX_API_URL": "{{env.LX_API_URL}}"
       },
       "installDependency": false

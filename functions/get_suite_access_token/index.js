@@ -6,8 +6,8 @@ const db = app.database();
 
 exports.main = async (event, context) => {
     let ref = await db.collection("lx_suites").doc("suite_access_token").get();
-    if (ref.data[0] && ref.data[0].created_at + ref.data[0].expires_in + 600 > new Date().getTime()) {
-        // suite_access_token DB存在且距离过期还有10分钟以上，可直接取出使用
+    if (ref.data[0] && ref.data[0].created_at + ref.data[0].expires_in + 2400 > new Date().getTime() && !event.refresh) {
+        // suite_access_token DB存在且距离过期还有40分钟以上，可直接取出使用
         return ref.data[0].value;
     }
 

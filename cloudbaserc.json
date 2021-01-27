@@ -46,23 +46,29 @@
           ]
         }
       }
+    },
+    "hooks": {
+      "preDeploy": {
+        "type": "execCommand",
+        "commands": [
+          "tcb hosting deploy ./pages -e {{env.ENV_ID}}"
+        ]
+      },
+      "postDeploy": {
+        "type": "callFunction",
+        "functions": [
+          {
+            "functionName": "get_suite_access_token",
+            "params": {
+              "refresh": "1"
+            }
+          }
+        ]
+      }
     }
   },
   "functionRoot": "./functions",
   "functions": [
-    {
-      "name": "get_suite_access_token",
-      "runtime": "Nodejs10.15",
-      "handler": "index.main",
-      "timeout": 5,
-      "memorySize": 128,
-      "envVariables": {
-        "LX_SUITE_ID": "{{env.LX_SUITE_ID}}",
-        "LX_SUITE_SECRET": "{{env.LX_SUITE_SECRET}}",
-        "LX_API_URL": "{{env.LX_API_URL}}"
-      },
-      "installDependency": false
-    },
     {
       "name": "suite_callback",
       "runtime": "Nodejs10.15",
@@ -75,7 +81,49 @@
       "installDependency": false
     },
     {
+      "name": "get_suite_access_token",
+      "runtime": "Nodejs10.15",
+      "handler": "index.main",
+      "timeout": 5,
+      "memorySize": 128,
+      "envVariables": {
+        "LX_SUITE_ID": "{{env.LX_SUITE_ID}}",
+        "LX_SUITE_SECRET": "{{env.LX_SUITE_SECRET}}",
+        "LX_API_URL": "{{env.LX_API_URL}}"
+      },
+      "triggers": [
+        {
+          "name": "get_suite_access_token",
+          "type": "timer",
+          "config": "0 */30 * * * * *"
+        }
+      ],
+      "installDependency": false
+    },
+    {
       "name": "get_corp_info",
+      "runtime": "Nodejs10.15",
+      "handler": "index.main",
+      "timeout": 5,
+      "memorySize": 128,
+      "envVariables": {
+        "LX_API_URL": "{{env.LX_API_URL}}"
+      },
+      "installDependency": false
+    },
+    {
+      "name": "get_user_info",
+      "runtime": "Nodejs10.15",
+      "handler": "index.main",
+      "timeout": 5,
+      "memorySize": 128,
+      "envVariables": {
+        "LX_API_URL": "{{env.LX_API_URL}}"
+      },
+      "installDependency": false
+    },
+    {
+      "name": "get_corp_token",
       "runtime": "Nodejs10.15",
       "handler": "index.main",
       "timeout": 5,

@@ -11,18 +11,11 @@ exports.main = async(event, context) => {
     let code = event.queryStringParameters.code;
 
     let call_ref = await app.callFunction({
-        name: "get_suite_access_token"
+        name: "get_user_info"
     });
 
-    const suite_access_token = call_ref.result
-
-    let user_info = await axios.post(process.env.LX_API_URL + "service/get_user_info?suite_access_token=" + suite_access_token,
-        {
-            "code": code
-        }).then(function(response) {
-            return response.data.data;
-        }
-    );
+    const user_info = call_ref.result;
+    
     console.log(user_info);
     if (!user_info) {
         return {

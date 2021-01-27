@@ -7,22 +7,21 @@ const db = app.database();
 exports.main = async (event, context) => {
     const company_id = event.company_id;
     if (!company_id) {
-        const companies = await db.collection("companies").doc(company_id).get().then(function(response) {
+        const companies = await db.collection("companies").get().then(function(response) {
             return response.data;
         });
         for (let i =0; i<companies.length; i++) {
             app.callFunction({
                 name: "get_corp_token",
                 data: {
-                    "company_id": companies[i]._id,
-                    "refresh": "1"
+                    "company_id": companies[i]._id
                 }
             });
         }
         return null;
     }
     let ref = await db.collection("lx_suites").doc("company_" + company_id + "_token").get();
-    if (ref.data[0] && ref.data[0].created_at + ref.data[0].expires_in + 2400 > new Date().getTime() && !event.refresh) {
+    if (ref.data[0] && ref.data[0].created_at + ref.data[0].expires_in + 2400 > new Date().getTime()) {
         // corp_token DB存在且距离过期还有40分钟以上，可直接取出使用
         return ref.data[0].value;
     }

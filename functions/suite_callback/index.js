@@ -6,7 +6,7 @@ const db = app.database();
 exports.main = async (event, context) => {
     if (event.httpMethod === "POST") {
         const body = JSON.parse(event.body);
-        db.collection("lx_suite_callback_logs").add(body);
+        await db.collection("lx_suite_callback_logs").add(body);
         console.log(body);
 
         if (body.action === "service/suite_ticket") {
@@ -16,22 +16,30 @@ exports.main = async (event, context) => {
                 "created_at": new Date().getTime()
             });
         } else if (body.action === "service/create_auth") {
-            const call_ref = await app.callFunction({
+            app.callFunction({
                 name: "get_corp_info",
                 data: {
                     "auth_code": body.attributes.auth_code
                 }
-            });
-            console.log(call_ref);
-            const company_id = call_ref.result.company_id;
-            const permanent_code = call_ref.result.permanent_code;
-            delete call_ref.result.company_id;
-            delete call_ref.result.permanent_code;
-            db.collection("companies").add({
-                "_id": company_id,
-                "permanent_code": permanent_code,
-                "attributes": call_ref.result,
-                "created_at": new Date().format("yyyy-MM-dd hh:mm:ss")
+            }).then(function(response) {
+                console.log(response);
+                const company_id = response.result.company_id;
+                const permanent_code = response.result.permanent_code;
+                delete response.result.company_id;
+                delete response.result.permanent_code;
+                db.collection("companies").add({
+                    "_id": company_id,
+                    "permanent_code": permanent_code,
+                    "attributes": response.result,
+                    "created_at": new Date().format("yyyy-MM-dd hh:mm:ss")
+                });
+                // 预生成corp_token
+                app.callFunction({
+                    name: "get_corp_token",
+                    data: {
+                        "company_id": company_id
+                    }
+                })
             });
         } else if (body.action === "service/cancel_auth") {
             db.collection("companies").doc(body.attributes.company_id).remove();

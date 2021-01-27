@@ -131,6 +131,13 @@
       "envVariables": {
         "LX_API_URL": "{{env.LX_API_URL}}"
       },
+      "triggers": [
+        {
+          "name": "get_corp_token",
+          "type": "timer",
+          "config": "0 */30 * * * * *"
+        }
+      ],
       "installDependency": false
     },
     {

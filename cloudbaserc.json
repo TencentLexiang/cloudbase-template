@@ -42,6 +42,28 @@
             },
             {
               "collectionName": "users"
+            },
+            {
+              "collectionName": "departments",
+              "createIndexes": [
+                {
+                  "name": "departments_company_id_version_index",
+                  "unique": false,
+                  "keys": [
+                    {
+                      "name": "company_id",
+                      "direction": "1"
+                    },
+                    {
+                      "name": "version",
+                      "direction": "1"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "collectionName": "department_user"
             }
           ]
         }
@@ -161,6 +183,17 @@
       "memorySize": 128,
       "envVariables": {
         "ENV_ID": "{{env.ENV_ID}}",
+        "LX_API_URL": "{{env.LX_API_URL}}"
+      },
+      "installDependency": false
+    },
+    {
+      "name": "sync_contact",
+      "runtime": "Nodejs10.15",
+      "handler": "index.main",
+      "timeout": 60,
+      "memorySize": 2048,
+      "envVariables": {
         "LX_API_URL": "{{env.LX_API_URL}}"
       },
       "installDependency": false

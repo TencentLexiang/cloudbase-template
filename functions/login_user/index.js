@@ -8,14 +8,15 @@ const app = cloudBase.init({
 const db = app.database();
 
 exports.main = async(event, context) => {
-    let code = event.queryStringParameters.code;
-
     let call_ref = await app.callFunction({
-        name: "get_user_info"
+        name: "get_user_info",
+        data: {
+            code: event.queryStringParameters.code
+        }
     });
 
     const user_info = call_ref.result;
-    
+
     console.log(user_info);
     if (!user_info) {
         return {

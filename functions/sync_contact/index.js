@@ -9,7 +9,7 @@ exports.main = async(event, context) => {
     async_contact(event.company_id, uuid.v4());
 }
 
-function async_contact(company_id, version) {
+async function async_contact(company_id, version) {
     // 获取 corp_token
     const corp_token = await app.callFunction({
         name: "get_corp_token",

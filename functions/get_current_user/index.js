@@ -16,7 +16,7 @@ exports.main = async(event, context) => {
 
 function redirect_to_login(company_id = null) {
     let redirect_uri = process.env.PAGE_URL + "/auth-callback";
-    let params = "suite_id=" + process.env.LX_SUITE_ID +"&redirect_uri=" + encodeURIComponent(redirect_uri) + "&response_type=code&scope=snsapi_base";
+    let params = "suite_id=" + process.env.LX_SUITE_ID +"&redirect_uri=" + encodeURIComponent(redirect_uri) + "&response_type=code&scope=snsapi_userinfo";
     if (company_id) {
         params = params + "&company_id=" + company_id;
     }

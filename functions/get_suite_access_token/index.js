@@ -27,6 +27,7 @@ exports.main = async (event, context) => {
             "suite_secret": process.env.LX_SUITE_SECRET,
             "suite_ticket": suite_ticket
         }).then(function(response) {
+            console.log(response.data);
             db.collection("lx_suites").doc("suite_access_token").set({
                 "value": response.data.suite_access_token,
                 "expires_in": response.data.expires_in,

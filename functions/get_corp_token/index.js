@@ -42,6 +42,7 @@ exports.main = async (event, context) => {
             "company_id": company_id,
             "permanent_code": company.permanent_code
         }).then(function(response) {
+            console.log(response.data);
             db.collection("lx_suites").doc("company_" + company_id + "_token").set({
                 "value": response.data.access_token,
                 "expires_in": response.data.expires_in,

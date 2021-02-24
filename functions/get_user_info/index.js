@@ -12,6 +12,7 @@ exports.main = async(event, context) => {
         {
             "code": event.code
         }).then(function(response) {
+            console.log(response.data);
             return response.data.data;
         }
     );

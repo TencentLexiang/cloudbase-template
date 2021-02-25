@@ -73,7 +73,9 @@
       "preDeploy": {
         "type": "execCommand",
         "commands": [
-          "tcb hosting deploy ./pages -e {{env.ENV_ID}}"
+          "cd vue && yarn install",
+          "cd vue && yarn build",
+          "tcb hosting deploy ./vue/dist -e {{env.ENV_ID}}"
         ]
       },
       "postDeploy": {
@@ -120,7 +122,9 @@
           "config": "0 */30 * * * * *"
         }
       ],
-      "installDependency": false
+      "installDependency": false,
+      "publicNet": "ENABLE",
+      "eip": "ENABLE"
     },
     {
       "name": "get_corp_info",
@@ -131,7 +135,9 @@
       "envVariables": {
         "LX_API_URL": "{{env.LX_API_URL}}"
       },
-      "installDependency": false
+      "installDependency": false,
+      "publicNet": "ENABLE",
+      "eip": "ENABLE"
     },
     {
       "name": "get_user_info",
@@ -142,7 +148,9 @@
       "envVariables": {
         "LX_API_URL": "{{env.LX_API_URL}}"
       },
-      "installDependency": false
+      "installDependency": false,
+      "publicNet": "ENABLE",
+      "eip": "ENABLE"
     },
     {
       "name": "get_corp_token",
@@ -160,7 +168,9 @@
           "config": "0 */30 * * * * *"
         }
       ],
-      "installDependency": false
+      "installDependency": false,
+      "publicNet": "ENABLE",
+      "eip": "ENABLE"
     },
     {
       "name": "get_current_user",
@@ -196,7 +206,9 @@
       "envVariables": {
         "LX_API_URL": "{{env.LX_API_URL}}"
       },
-      "installDependency": false
+      "installDependency": false,
+      "publicNet": "ENABLE",
+      "eip": "ENABLE"
     }
   ],
   "region": "ap-guangzhou"

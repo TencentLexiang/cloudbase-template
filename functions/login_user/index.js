@@ -11,20 +11,18 @@ exports.main = async(event, context) => {
     let call_ref = await app.callFunction({
         name: "get_user_info",
         data: {
-            code: event.queryStringParameters.code
+            "code": event.queryStringParameters.code
         }
     });
 
     const user_info = call_ref.result;
 
-    console.log(user_info);
     if (!user_info) {
         return {
             "code": 401,
             "msg": "获取用户信息失败"
         };
     }
-    staff_id = user_info.staff_id;
     let company_info = await db.collection("companies").doc(user_info.company_id).get();
     if (!company_info.data[0]) {
         return {
@@ -32,6 +30,12 @@ exports.main = async(event, context) => {
             "msg": "用户所在的乐享企业未开启应用"
         }
     }
+
+    let attributes = {
+        "name": user_info.staff_name,
+        "avatar": user_info.staff_avatar,
+        "gender": user_info.staff_gender
+    };
 
     let user = await db.collection("users").where({
         "staff_id": user_info.staff_id,
@@ -42,7 +46,7 @@ exports.main = async(event, context) => {
         const res = await db.collection("users").add({
             "staff_id": user_info.staff_id,
             "company_id": user_info.company_id,
-            "attributes": {},
+            "attributes": attributes,
             "created_at": new Date().format("yyyy-MM-dd hh:mm:ss")
         });
         user_id = res.id
@@ -54,7 +58,8 @@ exports.main = async(event, context) => {
         "code": 0,
         "msg": "ok",
         "data": {
-            "ticket": app.auth().createTicket(user_id)
+            "ticket": app.auth().createTicket(user_id),
+            "staff_attributes": attributes
         }
     };
 }

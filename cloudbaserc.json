@@ -9,9 +9,9 @@
         "inputs": {
           "functionRootPath": "./functions",
           "servicePaths": {
-            "get_current_user": "/get_current_user",
             "login_user": "/login_user",
-            "suite_callback": "/suite_callback"
+            "suite_callback": "/suite_callback",
+            "get_course_link": "/get_course_link"
           }
         }
       },
@@ -80,14 +80,7 @@
       },
       "postDeploy": {
         "type": "callFunction",
-        "functions": [
-          {
-            "functionName": "get_suite_access_token",
-            "params": {
-              "refresh": "1"
-            }
-          }
-        ]
+        "functions": []
       }
     }
   },
@@ -173,19 +166,6 @@
       "eip": "ENABLE"
     },
     {
-      "name": "get_current_user",
-      "runtime": "Nodejs10.15",
-      "handler": "index.main",
-      "timeout": 5,
-      "memorySize": 128,
-      "envVariables": {
-        "LX_SUITE_ID": "{{env.LX_SUITE_ID}}",
-        "PAGE_URL": "{{env.PAGE_URL}}",
-        "LX_AUTH_URL": "{{env.LX_AUTH_URL}}"
-      },
-      "installDependency": false
-    },
-    {
       "name": "login_user",
       "runtime": "Nodejs10.15",
       "handler": "index.main",
@@ -209,6 +189,15 @@
       "installDependency": false,
       "publicNet": "ENABLE",
       "eip": "ENABLE"
+    },
+    {
+      "name": "get_course_link",
+      "runtime": "Nodejs10.15",
+      "handler": "index.main",
+      "timeout": 60,
+      "memorySize": 2048,
+      "envVariables": {},
+      "installDependency": false
     }
   ],
   "region": "ap-guangzhou"

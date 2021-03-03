@@ -14,22 +14,23 @@ export default {
     });
     const auth = app.auth();
 
-    const loginState = await auth.getLoginState();
-    console.log(loginState);
     const { code } = this.$route.query;
-    // 1. 建议登录前检查当前是否已经登录
-    if (!loginState) {
-      // 2. 请求开发者自有服务接口获取ticket
-      const response = await axios.get('https://todayapi.lexiangla.net/login_user', {
-        params: {
-          code,
-        },
-      });
-      console.log(response);
-      // 3. 登录 CloudBase
-      const result = await auth.customAuthProvider().signIn(response.data.data.ticket);
-      console.log(result);
-    }
-  },
+    const response = await axios.get('https://todayapi.lexiangla.net/login_user', {
+      params: {
+        code,
+      },
+    });
+    const result = await auth.customAuthProvider().signIn(response.data.data.ticket);
+    console.log(result);
+    const user = auth.currentUser;
+    const r = this.$router;
+    user.update({
+      nickName: response.data.data.staff_attributes.name,
+      gender: response.data.data.staff_attributes.gender == 0 ? "UNKNOWN" : response.data.data.staff_attributes.gender == 1 ? "MALE" : "FEMALE",
+      avatarUrl: response.data.data.staff_attributes.avatar,
+    }).then(function() {
+      r.push('/home');
+    });
+  }
 }
-</script>
+</script> 

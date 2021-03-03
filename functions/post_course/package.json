@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@cloudbase/node-sdk": "^2.5.0"
+    "@cloudbase/node-sdk": "^2.5.0",
+    "axios": "^0.21.1"
   }
 }

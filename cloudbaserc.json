@@ -191,13 +191,17 @@
       "eip": "ENABLE"
     },
     {
-      "name": "get_course_link",
+      "name": "post_course",
       "runtime": "Nodejs10.15",
       "handler": "index.main",
-      "timeout": 60,
-      "memorySize": 2048,
-      "envVariables": {},
-      "installDependency": false
+      "timeout": 5,
+      "memorySize": 128,
+      "envVariables": {
+        "LX_API_URL": "{{env.LX_API_URL}}"
+      },
+      "installDependency": false,
+      "publicNet": "ENABLE",
+      "eip": "ENABLE"
     }
   ],
   "region": "ap-guangzhou"

@@ -1,7 +1,9 @@
 const axios = require('axios');
 const cloudBase = require('@cloudbase/node-sdk');
 
-const app = cloudBase.init({});
+const app = cloudBase.init({
+    env: process.env.ENV_ID
+});
 
 exports.main = async(event, context) => {
     const call_ref = await app.callFunction({

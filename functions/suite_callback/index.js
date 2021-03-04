@@ -1,6 +1,8 @@
 const cloudBase = require('@cloudbase/node-sdk');
 
-const app = cloudBase.init({});
+const app = cloudBase.init({
+    env: process.env.ENV_ID
+});
 const db = app.database();
 
 exports.main = async (event, context) => {

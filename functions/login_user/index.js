@@ -11,7 +11,7 @@ exports.main = async(event, context) => {
     let call_ref = await app.callFunction({
         name: "get_user_info",
         data: {
-            "code": event.queryStringParameters.code
+            "code": event.code
         }
     });
 

@@ -1,7 +1,9 @@
 const cloudBase = require('@cloudbase/node-sdk');
 const axios = require('axios');
 
-const app = cloudBase.init({});
+const app = cloudBase.init({
+    env: process.env.ENV_ID
+});
 
 exports.main = async(event, context) => {
     const company_id = event.company_id;

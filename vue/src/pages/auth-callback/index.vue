@@ -4,7 +4,6 @@
 
 <script>
 import cloudbase from '@cloudbase/js-sdk';
-import axios from 'axios';
 
 export default {
   name: 'auth-callback',
@@ -18,23 +17,30 @@ export default {
     });
     const { code } = this.$route.query;
     const state = this.$route.query.state;
-    const response = await axios.get('https://todayapi.lexiangla.net/login_user', {
-      params: {
-        code,
-      },
-    });
-    await auth.customAuthProvider().signIn(response.data.data.ticket);
+    const response = await app.callFunction({
+      // 云函数名称
+      name: "login_user",
+      data: {
+        code
+      }
+    }).then(function(response) {
+      console.log(response.result.data);
+      return response.result.data;
+    })
+    const ss = await auth.customAuthProvider().signIn(response.ticket);
+    console.log(ss);
     const user = auth.currentUser;
     const r = this.$router;
     user.update({
-      nickName: response.data.data.staff_attributes.name,
-      gender: response.data.data.staff_attributes.gender == 0 ? "UNKNOWN" : response.data.data.staff_attributes.gender == 1 ? "MALE" : "FEMALE",
-      avatarUrl: response.data.data.staff_attributes.avatar,
+      nickName: response.staff_attributes.name,
+      gender: response.staff_attributes.gender == 0 ? "UNKNOWN" : response.staff_attributes.gender == 1 ? "MALE" : "FEMALE",
+      avatarUrl: response.staff_attributes.avatar,
     }).then(function() {
       if (state) {
         console.log("go");
         window.location.href = state;
       } else {
+        console.log("go2");
         r.push("/");
       }
     });

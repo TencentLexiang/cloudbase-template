@@ -20,14 +20,18 @@ router.beforeEach(async (to, from, next) => {
 
   if (company_id) {
     const app = cloudbase.init({
-      env: process.env.ENV_ID
+      env: process.env.ENV_ID,
+      region: process.env.REGION
     });
-    const auth = app.auth();
+    const auth = app.auth({
+      persistence: "local"
+    });
     const loginState = await auth.getLoginState();
     console.log(loginState, loginUrl(company_id));
 
     if (!loginState) {
       window.location.href = loginUrl(company_id);
+      return;
     }
   }
   
@@ -36,7 +40,7 @@ router.beforeEach(async (to, from, next) => {
 
 function loginUrl(company_id = null) {
   const redirect_uri = `${process.env.PAGE_URL}/auth-callback`;
-  let params = `suite_id=${process.env.LX_SUITE_ID}&redirect_uri=${encodeURIComponent(redirect_uri)}&response_type=code&scope=snsapi_userinfo`;
+  let params = `suite_id=${process.env.LX_SUITE_ID}&redirect_uri=${encodeURIComponent(redirect_uri)}&response_type=code&scope=snsapi_userinfo&state=${encodeURIComponent(window.location.href)}`;
 
   if (company_id) {
     params = `${params}&company_id=${company_id}`;

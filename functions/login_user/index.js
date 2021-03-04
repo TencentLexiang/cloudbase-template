@@ -3,7 +3,7 @@ const cloudBase = require('@cloudbase/node-sdk');
 
 const app = cloudBase.init({
     env: process.env.ENV_ID,
-    credentials: require("./tcb_custom_login.json")
+    credentials: require("./tcb_custom_login_key.json")
 });
 const db = app.database();
 
@@ -58,7 +58,10 @@ exports.main = async(event, context) => {
         "code": 0,
         "msg": "ok",
         "data": {
-            "ticket": app.auth().createTicket(user_id),
+            "ticket": app.auth().createTicket(user_id, {
+                refresh: 6 * 3600 * 1000,
+                expire: 12 * 3600 * 1000
+            }),
             "staff_attributes": attributes
         }
     };

@@ -7,7 +7,17 @@ import App from './app.vue';
 
 import cloudbase from '@cloudbase/js-sdk';
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+
+const app = cloudbase.init({
+  env: process.env.ENV_ID,
+  region: process.env.REGION,
+});
+const auth = app.auth({
+  persistence: 'local',
+});
+Vue.prototype.$app = app;
+Vue.prototype.$auth = auth;
 
 const router = new VueRouter({
   base: '/',
@@ -19,14 +29,7 @@ router.beforeEach(async (to, from, next) => {
   const { company_id } = to.query;
 
   if (company_id) {
-    const app = cloudbase.init({
-      env: process.env.ENV_ID,
-      region: process.env.REGION
-    });
-    const auth = app.auth({
-      persistence: "local"
-    });
-    const loginState = await auth.getLoginState();
+    const loginState = await Vue.prototype.$auth.getLoginState();
     console.log(loginState, loginUrl(company_id));
 
     if (!loginState) {

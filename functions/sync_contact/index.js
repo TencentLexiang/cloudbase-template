@@ -102,7 +102,7 @@ function addUserToDB(user, company_id, version) {
         db.collection("department_user").add({
             "company_id": company_id, 
             "staff_id": staff_id, 
-            "department_id": user.departments[i].id,
+            "department_lx_id": user.departments[i].id,
             "version": version
         });
     }

@@ -3,15 +3,18 @@
 </template>
 
 <script>
-import cloudbase from '@cloudbase/js-sdk';
 
 export default {
   name: 'home',
   async mounted() {
-    const app = cloudbase.init({
-      env: process.env.ENV_ID,
-      region: process.env.REGION
-    });
+    const response = await this.$app.callFunction({
+      name: "api_upload_course",
+      data: {
+      }
+    }).then(function(response) {
+      console.log(response.result);
+      return response.result;
+    })
   }
 }
 </script>

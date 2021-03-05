@@ -61,14 +61,30 @@
               ]
             },
             {
-              "collectionName": "department_user"
+              "collectionName": "department_user",
+              "createIndexes": [
+                {
+                  "name": "department_user_company_id_version_index",
+                  "unique": false,
+                  "keys": [
+                    {
+                      "name": "company_id",
+                      "direction": "1"
+                    },
+                    {
+                      "name": "version",
+                      "direction": "1"
+                    }
+                  ]
+                }
+              ]
             },
             {
               "collectionName": "courses",
               "createIndexes": [
                 {
-                  "name": "courses_lx_id",
-                  "unique": false,
+                  "name": "courses_lx_id_index",
+                  "unique": true,
                   "keys": [
                     {
                       "name": "lx_id",
@@ -80,16 +96,23 @@
             }
           ]
         }
+      },
+      "client": {
+        "use": "@cloudbase/framework-plugin-website",
+        "inputs": {
+          "installCommand": "cd vue && yarn install",
+          "buildCommand": "cd vue && yarn build",
+          "outputPath": "vue/dist",
+          "cloudPath": "/",
+          "ignore": []
+        }
       }
     },
     "hooks": {
       "preDeploy": {
         "type": "execCommand",
         "commands": [
-          "cp ./tcb_custom_login_key.json ./functions/login_user/",
-          "cd vue && yarn install",
-          "cd vue && yarn build",
-          "tcb hosting deploy ./vue/dist -e {{env.ENV_ID}}"
+          "cp ./tcb_custom_login_key.json ./functions/login_user/"
         ]
       },
       "postDeploy": {
@@ -215,6 +238,18 @@
       "envVariables": {
         "ENV_ID": "{{env.ENV_ID}}",
         "LX_API_URL": "{{env.LX_API_URL}}"
+      },
+      "publicNet": "ENABLE",
+      "eip": "ENABLE"
+    },
+    {
+      "name": "api_upload_course",
+      "runtime": "Nodejs10.15",
+      "handler": "index.main",
+      "timeout": 5,
+      "memorySize": 128,
+      "envVariables": {
+        "ENV_ID": "{{env.ENV_ID}}"
       },
       "publicNet": "ENABLE",
       "eip": "ENABLE"

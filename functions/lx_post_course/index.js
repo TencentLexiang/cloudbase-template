@@ -10,7 +10,7 @@ exports.main = async(event, context) => {
     const staff_id = event.staff_id;
     const attributes = event.attributes;
     const corp_token = await app.callFunction({
-        name: "get_corp_token",
+        name: "lx_get_corp_token",
         data: {
             "company_id": company_id
         }

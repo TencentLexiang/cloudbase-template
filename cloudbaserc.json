@@ -8,8 +8,17 @@
         "use": "@cloudbase/framework-plugin-function",
         "inputs": {
           "functionRootPath": "./functions",
+          "functionDefaultConfig": {
+            "runtime": "Nodejs10.15",
+            "handler": "index.main",
+            "timeout": 5,
+            "memorySize": 128,
+            "envVariables": {
+              "ENV_ID": "{{env.ENV_ID}}"
+            }
+          },
           "servicePaths": {
-            "suite_callback": "/suite_callback"
+            "base_suite_callback": "/suite_callback"
           }
         }
       },
@@ -112,7 +121,7 @@
       "preDeploy": {
         "type": "execCommand",
         "commands": [
-          "cp ./tcb_custom_login_key.json ./functions/login_user/"
+          "cp ./tcb_custom_login_key.json ./functions/base_login_user/"
         ]
       },
       "postDeploy": {
@@ -121,34 +130,29 @@
       }
     }
   },
-  "functionRoot": "./functions",
   "functions": [
     {
-      "name": "suite_callback",
-      "runtime": "Nodejs10.15",
-      "handler": "index.main",
-      "timeout": 5,
-      "memorySize": 128,
+      "name": "base_suite_callback",
       "envVariables": {
-        "ENV_ID": "{{env.ENV_ID}}",
         "LX_SUITE_ID": "{{env.LX_SUITE_ID}}"
       }
     },
     {
-      "name": "get_suite_access_token",
-      "runtime": "Nodejs10.15",
-      "handler": "index.main",
-      "timeout": 5,
-      "memorySize": 128,
+      "name": "base_login_user",
+      "aclRule": {
+        "invoke": true
+      }
+    },
+    {
+      "name": "lx_get_suite_access_token",
       "envVariables": {
-        "ENV_ID": "{{env.ENV_ID}}",
         "LX_SUITE_ID": "{{env.LX_SUITE_ID}}",
         "LX_SUITE_SECRET": "{{env.LX_SUITE_SECRET}}",
         "LX_API_URL": "{{env.LX_API_URL}}"
       },
       "triggers": [
         {
-          "name": "get_suite_access_token",
+          "name": "lx_get_suite_access_token",
           "type": "timer",
           "config": "0 */30 * * * * *"
         }
@@ -157,44 +161,29 @@
       "eip": "ENABLE"
     },
     {
-      "name": "get_corp_info",
-      "runtime": "Nodejs10.15",
-      "handler": "index.main",
-      "timeout": 5,
-      "memorySize": 128,
+      "name": "lx_get_corp_info",
       "envVariables": {
-        "ENV_ID": "{{env.ENV_ID}}",
         "LX_API_URL": "{{env.LX_API_URL}}"
       },
       "publicNet": "ENABLE",
       "eip": "ENABLE"
     },
     {
-      "name": "get_user_info",
-      "runtime": "Nodejs10.15",
-      "handler": "index.main",
-      "timeout": 5,
-      "memorySize": 128,
+      "name": "lx_get_user_info",
       "envVariables": {
-        "ENV_ID": "{{env.ENV_ID}}",
         "LX_API_URL": "{{env.LX_API_URL}}"
       },
       "publicNet": "ENABLE",
       "eip": "ENABLE"
     },
     {
-      "name": "get_corp_token",
-      "runtime": "Nodejs10.15",
-      "handler": "index.main",
-      "timeout": 5,
-      "memorySize": 128,
+      "name": "lx_get_corp_token",
       "envVariables": {
-        "ENV_ID": "{{env.ENV_ID}}",
         "LX_API_URL": "{{env.LX_API_URL}}"
       },
       "triggers": [
         {
-          "name": "get_corp_token",
+          "name": "lx_get_corp_token",
           "type": "timer",
           "config": "0 */30 * * * * *"
         }
@@ -203,65 +192,20 @@
       "eip": "ENABLE"
     },
     {
-      "name": "login_user",
-      "runtime": "Nodejs10.15",
-      "handler": "index.main",
-      "timeout": 5,
-      "memorySize": 128,
+      "name": "lx_post_course",
       "envVariables": {
-        "ENV_ID": "{{env.ENV_ID}}",
-        "LX_API_URL": "{{env.LX_API_URL}}"
-      },
-      "aclRule": {
-        "invoke": true
-      }
-    },
-    {
-      "name": "sync_contact",
-      "runtime": "Nodejs10.15",
-      "handler": "index.main",
-      "timeout": 60,
-      "memorySize": 2048,
-      "envVariables": {
-        "ENV_ID": "{{env.ENV_ID}}",
         "LX_API_URL": "{{env.LX_API_URL}}"
       },
       "publicNet": "ENABLE",
       "eip": "ENABLE"
     },
     {
-      "name": "post_course",
-      "runtime": "Nodejs10.15",
-      "handler": "index.main",
-      "timeout": 5,
-      "memorySize": 128,
-      "envVariables": {
-        "ENV_ID": "{{env.ENV_ID}}",
-        "LX_API_URL": "{{env.LX_API_URL}}"
-      },
-      "publicNet": "ENABLE",
-      "eip": "ENABLE"
+      "name": "api_upload_course"
     },
     {
-      "name": "api_upload_course",
-      "runtime": "Nodejs10.15",
-      "handler": "index.main",
-      "timeout": 5,
-      "memorySize": 128,
-      "envVariables": {
-        "ENV_ID": "{{env.ENV_ID}}"
-      }
-    },
-    {
-      "name": "api_get_course_link",
-      "runtime": "Nodejs10.15",
-      "handler": "index.main",
-      "timeout": 5,
-      "memorySize": 128,
-      "envVariables": {
-        "ENV_ID": "{{env.ENV_ID}}"
-      }
+      "name": "api_get_course_link"
     }
   ],
-  "region": "ap-shanghai"
+  "region": "ap-shanghai",
+  "functionRoot": "./functions"
 }

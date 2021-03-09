@@ -1,4 +1,3 @@
-const axios = require('axios');
 const cloudBase = require('@cloudbase/node-sdk');
 
 const app = cloudBase.init({
@@ -9,7 +8,7 @@ const db = app.database();
 
 exports.main = async(event, context) => {
     let call_ref = await app.callFunction({
-        name: "get_user_info",
+        name: "lx_get_user_info",
         data: {
             "code": event.code
         }

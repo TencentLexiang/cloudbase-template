@@ -19,7 +19,7 @@ exports.main = async (event, context) => {
             });
         } else if (body.action === "service/create_auth") {
             app.callFunction({
-                name: "get_corp_info",
+                name: "lx_get_corp_info",
                 data: {
                     "auth_code": body.attributes.auth_code
                 }
@@ -37,7 +37,7 @@ exports.main = async (event, context) => {
                 });
                 // 预生成corp_token
                 app.callFunction({
-                    name: "get_corp_token",
+                    name: "lx_get_corp_token",
                     data: {
                         "company_id": company_id
                     }

@@ -14,7 +14,7 @@ exports.main = async (event, context) => {
         });
         for (let i =0; i<companies.length; i++) {
             app.callFunction({
-                name: "get_corp_token",
+                name: "lx_get_corp_token",
                 data: {
                     "company_id": companies[i]._id
                 }
@@ -33,7 +33,7 @@ exports.main = async (event, context) => {
     });
 
     const suite_access_token = await app.callFunction({
-        name: "get_suite_access_token"
+        name: "lx_get_suite_access_token"
     }).then(function(response) {
         return response.result;
     });

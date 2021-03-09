@@ -9,7 +9,7 @@ export default {
     const { code } = this.$route.query;
     const state = this.$route.query.state;
     const response = await this.$app.callFunction({
-      name: "login_user",
+      name: "base_login_user",
       data: {
         code
       }

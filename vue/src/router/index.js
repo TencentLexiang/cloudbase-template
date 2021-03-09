@@ -8,6 +8,11 @@ const routes = [
     path: '/auth-callback',
     name: 'authCallback',
     component: () => import(/* webpackChunkName: "js/auth-callback" */ '../pages/auth-callback/index.vue'), 
+  },
+  {
+    path: '/show-course',
+    name: 'showCourse',
+    component: () => import(/* webpackChunkName: "js/course" */ '../pages/course/show.vue'), 
   }
 ];
 

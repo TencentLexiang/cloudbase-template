@@ -23,7 +23,7 @@ exports.main = async (event, context) => {
         return null;
     }
     let ref = await db.collection("lx_suites").doc("company_" + company_id + "_token").get();
-    if (ref.data[0] && ref.data[0].created_at + ref.data[0].expires_in + 2400 > new Date().getTime()) {
+    if (ref.data[0] && ref.data[0].created_at + ref.data[0].expires_in + 2400 > new Date().getTime() && !event.refresh) {
         // corp_token DB存在且距离过期还有40分钟以上，可直接取出使用
         return ref.data[0].value;
     }

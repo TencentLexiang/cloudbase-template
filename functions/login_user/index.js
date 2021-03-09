@@ -34,7 +34,8 @@ exports.main = async(event, context) => {
     let attributes = {
         "name": user_info.staff_name,
         "avatar": user_info.staff_avatar,
-        "gender": user_info.staff_gender
+        "gender": user_info.staff_gender,
+        "company_id": user_info.company_id
     };
 
     let user = await db.collection("users").where({

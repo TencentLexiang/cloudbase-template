@@ -250,9 +250,17 @@
       "memorySize": 128,
       "envVariables": {
         "ENV_ID": "{{env.ENV_ID}}"
-      },
-      "publicNet": "ENABLE",
-      "eip": "ENABLE"
+      }
+    },
+    {
+      "name": "api_get_course_link",
+      "runtime": "Nodejs10.15",
+      "handler": "index.main",
+      "timeout": 5,
+      "memorySize": 128,
+      "envVariables": {
+        "ENV_ID": "{{env.ENV_ID}}"
+      }
     }
   ],
   "region": "ap-shanghai"

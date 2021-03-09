@@ -1,4 +1,6 @@
 const cloudBase = require('@cloudbase/node-sdk');
+const crypto = require('crypto');
+
 
 const app = cloudBase.init({
     env: process.env.ENV_ID
@@ -8,8 +10,15 @@ const db = app.database();
 exports.main = async (event, context) => {
     if (event.httpMethod === "POST") {
         const body = JSON.parse(event.body);
-        await db.collection("lx_suite_callback_logs").add(body);
+        var hash = crypto.createHash("sha1").update(body.nonce + process.env.LX_CALLBACK_SECRET + body.timestamp);
+        const sign = hash.digest('hex');
+
+        if (new Date().getTime()/1000 - body.timestamp > 5 || sign !== body.sign) {
+            return "error";
+        }
         console.log(body);
+
+        await db.collection("lx_suite_callback_logs").add(body);
 
         if (body.action === "service/suite_ticket") {
             db.collection("lx_suites").doc("suite_ticket").set({
@@ -46,8 +55,8 @@ exports.main = async (event, context) => {
         } else if (body.action === "service/cancel_auth") {
             db.collection("companies").doc(body.attributes.company_id).remove();
         }
+        return "success";
     }
-    return "success";
 }
 
 Date.prototype.format = function(fmt) {

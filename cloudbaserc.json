@@ -134,7 +134,8 @@
     {
       "name": "base_suite_callback",
       "envVariables": {
-        "LX_SUITE_ID": "{{env.LX_SUITE_ID}}"
+        "LX_SUITE_ID": "{{env.LX_SUITE_ID}}",
+        "LX_CALLBACK_SECRET": "{{env.LX_CALLBACK_SECRET}}"
       }
     },
     {

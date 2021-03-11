@@ -12,6 +12,7 @@ module.exports = {
           PAGE_URL: JSON.stringify(process.env.PAGE_URL),
           LX_SUITE_ID: JSON.stringify(process.env.LX_SUITE_ID),
           LX_AUTH_URL: JSON.stringify(process.env.LX_AUTH_URL),
+          PERSISTENCE: JSON.stringify(process.env.PERSISTENCE),
         },
       }),
     ],

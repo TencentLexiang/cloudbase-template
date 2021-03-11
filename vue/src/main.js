@@ -6,6 +6,7 @@ import routes from './router/index.js';
 import App from './app.vue';
 
 import cloudbase from '@cloudbase/js-sdk';
+import { lxStorage } from './utils';
 
 Vue.config.productionTip = false;
 
@@ -14,7 +15,7 @@ const app = cloudbase.init({
   region: process.env.REGION,
 });
 const auth = app.auth({
-  persistence: 'local',
+  persistence: process.env.PERSISTENCE
 });
 Vue.prototype.$app = app;
 Vue.prototype.$auth = auth;
@@ -26,14 +27,18 @@ const router = new VueRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  const { company_id } = to.query;
+  const { company_id: companyId } = to.query;
+  const loginCompanyId = lxStorage.getItem('company_id');
 
-  if (company_id) {
+  if (companyId) {
+    if (loginCompanyId && companyId !== loginCompanyId) {
+      lxStorage.clear();
+    }
+
     const loginState = await Vue.prototype.$auth.getLoginState();
-    console.log(loginState, loginUrl(company_id));
-
+    console.log('loginState, loginUrl', loginState, loginUrl(companyId));
     if (!loginState) {
-      window.location.href = loginUrl(company_id);
+      window.location.href = loginUrl(companyId);
       return;
     }
   }
@@ -43,7 +48,7 @@ router.beforeEach(async (to, from, next) => {
 
 function loginUrl(company_id = null) {
   const redirect_uri = `${process.env.PAGE_URL}/auth-callback`;
-  let params = `suite_id=${process.env.LX_SUITE_ID}&redirect_uri=${encodeURIComponent(redirect_uri)}&response_type=code&scope=snsapi_userinfo&state=${encodeURIComponent(window.location.href)}`;
+  let params = `suite_id=${process.env.LX_SUITE_ID}&redirect_uri=${encodeURIComponent(redirect_uri)}&response_type=code&scope=snsapi_userinfo&state=${window.btoa(window.location.href)}`;
 
   if (company_id) {
     params = `${params}&company_id=${company_id}`;

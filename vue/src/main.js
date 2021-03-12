@@ -28,7 +28,7 @@ const router = new VueRouter({
 
 router.beforeEach(async (to, from, next) => {
   const { company_id: companyId } = to.query;
-  const loginCompanyId = lxStorage.getItem('company_id');
+  const loginCompanyId = lxStorage.getItem('companyId');
 
   if (companyId) {
     if (loginCompanyId && companyId !== loginCompanyId) {
@@ -48,11 +48,13 @@ router.beforeEach(async (to, from, next) => {
 
 function loginUrl(company_id = null) {
   const redirect_uri = `${process.env.PAGE_URL}/auth-callback`;
-  let params = `suite_id=${process.env.LX_SUITE_ID}&redirect_uri=${encodeURIComponent(redirect_uri)}&response_type=code&scope=snsapi_userinfo&state=${window.btoa(window.location.href)}`;
+  let params = `suite_id=${process.env.LX_SUITE_ID}&redirect_uri=${encodeURIComponent(redirect_uri)}&response_type=code&scope=snsapi_userinfo`;
 
   if (company_id) {
     params = `${params}&company_id=${company_id}`;
   }
+
+  sessionStorage.setItem('intendUrl', encodeURIComponent(window.location));
 
   return `${process.env.LX_AUTH_URL}?${params}`;
 }

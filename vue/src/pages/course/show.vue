@@ -5,18 +5,16 @@
 <script>
 
 export default {
-  name: 'showCourse',
+  name: 'course-show',
   async mounted() {
-    const url = await this.$app.callFunction({
-      name: "api_get_course_link",
+    const { courseId } = this.$route.params;
+    const { result } = await this.$app.callFunction({
+      name: 'api_get_course_link',
       data: {
-        course_id: this.$route.query.course_id
+        course_id: courseId
       }
-    }).then(function(response) {
-      console.log(response.result);
-      return response.result;
-    })
-    window.location.href = url;
+    });
+    window.location.href = result;
   }
 }
 </script>

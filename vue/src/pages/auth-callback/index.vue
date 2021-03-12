@@ -8,7 +8,8 @@ import { lxStorage } from '../../utils';
 export default {
   name: 'auth-callback',
   async mounted() {
-    const { code, state } = this.$route.query;
+    const { code } = this.$route.query;
+    const intendUrl = sessionStorage.getItem('intendUrl');
     const response = await this.$app.callFunction({
       name: 'base_login_user',
       data: {
@@ -19,7 +20,7 @@ export default {
     console.log('base_login_user callback', response.result.data);
     await this.$auth.customAuthProvider().signIn(ticket);
 
-    lxStorage.setItem('company_id', staff_attributes.company_id);
+    lxStorage.setItem('companyId', staff_attributes.company_id);
 
     const user = this.$auth.currentUser;
     user.update({
@@ -27,8 +28,8 @@ export default {
       gender: staff_attributes.gender == 0 ? 'UNKNOWN' : staff_attributes.gender == 1 ? 'MALE' : 'FEMALE',
       avatarUrl: staff_attributes.avatar,
     }).then(() => {
-      if (state) {
-        window.location.href = window.atob(state);
+      if (intendUrl) {
+        window.location.href = decodeURIComponent(intendUrl);
       } else {
         this.$router.push('/');
       }

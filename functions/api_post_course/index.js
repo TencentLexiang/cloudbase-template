@@ -25,7 +25,7 @@ exports.main = async(event, context) => {
         "updated_at": created_at
     });
 
-    let call_ref = await app.callFunction({
+    let lx_course = await app.callFunction({
         name: "lx_post_course",
         data: {
             "company_id": user.data[0].company_id,
@@ -37,7 +37,21 @@ exports.main = async(event, context) => {
                 "video_link": process.env.PAGE_URL + "/courses/" + course.id + "?company_id=" + user.data[0].company_id
             }
         }
+    }).then(function(response) {
+        return response.result;
     });
+
+    await db.collection("courses").doc(course.id ).update({
+        "lx_id": lx_course.data.id
+    });
+
+    return {
+        "code": 0,
+        "msg": "ok",
+        "data": {
+            course_id: course.id
+        }
+    };
 }
 
 Date.prototype.format = function(fmt) {

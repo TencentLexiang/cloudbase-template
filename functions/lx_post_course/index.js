@@ -46,7 +46,7 @@ exports.main = async(event, context) => {
             }
         }).then(function(response) {
             console.log(response.data);
-            return response.data.data;
+            return response.data;
         }
     );
 }

@@ -5,32 +5,25 @@
 </template>
 
 <script>
+import { lxStorage } from '../../utils';
+
 export default {
   name: 'course-create',
   methods: {
     async onChange($event) {
       const files = $event.target.files;
       console.log('files', files);
-
-      const response = await this.$app.callFunction({
-        name: 'api_upload_course',
-        data: {
-          files
-        }
-      });
-      console.log('response', response);
-
-      // files.forEach(file => {
-      //   this.$app.uploadFile({
-      //     // 云存储的路径
-      //     cloudPath: 'dirname/filename',
-      //     // 需要上传的文件，File 类型
-      //     filePath: file
-      //   }).then(res => {
-      //     // 返回文件 ID
-      //     console.log(res.fileID);
-      //   });
-      // });
+      const loginCompanyId = lxStorage.getItem('companyId');
+      const cloudPath = loginCompanyId + "/" + new Date().getTime() + "/";
+      for (const file of files) {
+        const { fileID } = await this.$app.uploadFile({
+          // 云存储的路径
+          cloudPath: cloudPath + file.webkitRelativePath,
+          // 需要上传的文件，File 类型
+          filePath: file
+        });
+        console.log('fileID--', fileID)
+      }
     }
   }
 };

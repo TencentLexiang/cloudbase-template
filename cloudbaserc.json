@@ -93,7 +93,7 @@
               "createIndexes": [
                 {
                   "name": "courses_lx_id_index",
-                  "unique": true,
+                  "unique": false,
                   "keys": [
                     {
                       "name": "lx_id",

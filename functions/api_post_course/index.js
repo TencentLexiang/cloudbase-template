@@ -33,6 +33,7 @@ exports.main = async(event, context) => {
             "attributes": {
                 "title": event.title,
                 "content": event.content,
+                "category_id": event.category_id,
                 "video_link": process.env.PAGE_URL + "/courses/" + course.id + "?company_id=" + user.data[0].company_id
             }
         }

@@ -10,7 +10,7 @@ import { randomString, arrReduceWidthNumber } from '../../utils';
 export default {
   name: 'course-create',
   methods: {
-    onChange($event) {
+    async onChange($event) {
       const files = $event.target.files;
       const cloudPath = `${this.$company.id}/${randomString()}/`;
       console.log('files & cloudPath', files, cloudPath);
@@ -28,9 +28,9 @@ export default {
 
       const filesReduce = arrReduceWidthNumber(Object.values(files), 5);
       console.log('filesReduce', filesReduce);
-      filesReduce.forEach(files => {
+      for (const files of filesReduce) {
         console.log('fiels', files)
-        Promise.all(Object.keys(files).map(async (key) => {
+        await Promise.all(Object.keys(files).map(async (key) => {
           const file = files[key];
           const { fileID } = await this.$app.uploadFile({
             // 云存储的路径
@@ -52,7 +52,7 @@ export default {
           }
           console.log('uploadFile fileID', fileID);
         }));
-      });
+      };
     }
   }
 };

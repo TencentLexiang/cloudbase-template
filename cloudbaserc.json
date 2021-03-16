@@ -201,7 +201,10 @@
       "eip": "ENABLE"
     },
     {
-      "name": "api_upload_course"
+      "name": "api_post_course",
+      "envVariables": {
+        "PAGE_URL": "{{env.PAGE_URL}}"
+      }
     },
     {
       "name": "api_get_course_link"

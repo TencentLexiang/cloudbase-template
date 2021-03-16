@@ -39,9 +39,12 @@ export default {
         });
         if (key === indexFileKey) {
           const response = await this.$app.callFunction({
-            name: 'api_upload_course',
+            name: 'api_post_course',
             data: {
-              file_id: fileID
+              file_id: fileID,
+              title: "today测试",
+              content: "content123",
+              category_id: "9c336b789de311e7aed15254002b6735"
             }
           });
           console.log('api_upload_course response', response);

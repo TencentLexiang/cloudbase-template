@@ -5,25 +5,49 @@
 </template>
 
 <script>
-import { lxStorage } from '../../utils';
+import { randomString } from '../../utils';
 
 export default {
   name: 'course-create',
   methods: {
     async onChange($event) {
       const files = $event.target.files;
-      console.log('files', files);
-      const loginCompanyId = lxStorage.getItem('companyId');
-      const cloudPath = loginCompanyId + "/" + new Date().getTime() + "/";
-      for (const file of files) {
+      const cloudPath = `${this.$company.id}/${randomString()}/`;
+      console.log('files & cloudPath', files, cloudPath);
+
+      let hasIndexFile = false;
+      let indexFileKey = 0;
+      files.forEach((file, index) => {
+        if (/^[^\/]+\/index.html$/.test(file.webkitRelativePath)) {
+          hasIndexFile = true;
+          indexFileKey = index;
+        }
+      });
+      console.log('hasIndexFile & indexFileKey', hasIndexFile, indexFileKey);
+      if (!hasIndexFile) {
+        alert('根目录没有index.html文件');
+        return;
+      }
+
+      await Promise.all(Object.keys(files).map(async (key) => {
+        const file = files[key];
         const { fileID } = await this.$app.uploadFile({
           // 云存储的路径
           cloudPath: cloudPath + file.webkitRelativePath,
           // 需要上传的文件，File 类型
           filePath: file
         });
-        console.log('fileID--', fileID)
-      }
+        if (key === indexFileKey) {
+          const response = await this.$app.callFunction({
+            name: 'api_upload_course',
+            data: {
+              file_id: fileID
+            }
+          });
+          console.log('api_upload_course response', response);
+        }
+        console.log('uploadFile fileID', fileID);
+      }));
     }
   }
 };

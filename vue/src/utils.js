@@ -6,6 +6,11 @@ const lxStorage = {
   clear: () => storage.clear(),
 };
 
+const randomString = (len = 8) => {
+  return Math.random().toString(36).substr(2, len + 2);
+};
+
 export {
   lxStorage,
+  randomString,
 };

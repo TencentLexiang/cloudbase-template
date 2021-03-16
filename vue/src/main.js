@@ -20,6 +20,8 @@ const auth = app.auth({
 Vue.prototype.$app = app;
 Vue.prototype.$auth = auth;
 
+Vue.prototype.$company = { id: lxStorage.getItem('companyId') || '' };
+
 const router = new VueRouter({
   base: '/',
   mode: 'history',
@@ -28,7 +30,7 @@ const router = new VueRouter({
 
 router.beforeEach(async (to, from, next) => {
   const { company_id: companyId } = to.query;
-  const loginCompanyId = lxStorage.getItem('companyId');
+  const loginCompanyId = Vue.prototype.$company.id;
 
   if (companyId) {
     if (loginCompanyId && companyId !== loginCompanyId) {

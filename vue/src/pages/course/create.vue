@@ -12,7 +12,7 @@ export default {
   methods: {
     async onChange($event) {
       const files = $event.target.files;
-      const cloudPath = `${this.$company.id}/${randomString()}/`;
+      const cloudPath = `${this.$company.id}/${randomString()}${new Date().format('yyyyMMddhhmmss')}`;
       console.log('files & cloudPath', files, cloudPath);
 
       let hasIndexFile = false;
@@ -27,7 +27,9 @@ export default {
       }
 
       const filesReduce = arrReduceWidthNumber(Object.values(files), 5);
+      let indexFileId = '';
       console.log('filesReduce', filesReduce);
+
       for (const files of filesReduce) {
         console.log('fiels', files)
         await Promise.all(Object.keys(files).map(async (key) => {
@@ -39,20 +41,22 @@ export default {
             filePath: file
           });
           if (/^[^\/]+\/index.html$/.test(file.webkitRelativePath)) {
-            const response = await this.$app.callFunction({
-              name: 'api_post_course',
-              data: {
-                file_id: fileID,
-                title: "today测试",
-                content: "content123",
-                category_id: "9c336b789de311e7aed15254002b6735"
-              }
-            });
-            console.log('api_upload_course response', response);
+            indexFileId = fileID;
           }
           console.log('uploadFile fileID', fileID);
         }));
       };
+
+      const response = await this.$app.callFunction({
+        name: 'api_post_course',
+        data: {
+          file_id: indexFileId,
+          title: "today测试",
+          content: "content123",
+          category_id: "9c336b789de311e7aed15254002b6735"
+        }
+      });
+      console.log('api_upload_course response', response);
     }
   }
 };

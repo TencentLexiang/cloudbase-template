@@ -9,11 +9,14 @@ export default {
   async mounted() {
     const { courseId } = this.$route.params;
     const { result } = await this.$app.callFunction({
-      name: 'api_get_course_link',
-      data: {
-        course_id: courseId
-      }
-    });
+        name: 'third_course',
+        data: {
+          method: "get_link",
+          attributes: {
+            id: courseId
+          }
+        }
+      });
     window.location.href = result;
   }
 }

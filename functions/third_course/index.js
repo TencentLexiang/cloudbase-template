@@ -52,11 +52,7 @@ async function store(attributes) {
     });
 
     return {
-        "code": 0,
-        "msg": "ok",
-        "data": {
-            id: course.id
-        }
+        id: course.id
     };
 }
 

@@ -59,7 +59,7 @@ export default {
           }
         }
       }).then(function(res) {
-        return res.result.data.id;
+        return res.result.id;
       });
 
       await this.$app.callFunction({

@@ -5,19 +5,27 @@ const app = cloudBase.init({
     env: process.env.ENV_ID
 });
 
+let staff_id;
+let corp_token;
+
 exports.main = async(event, context) => {
-    const company_id = event.company_id;
-    const staff_id = event.staff_id;
-    const attributes = event.attributes;
-    const corp_token = await app.callFunction({
+    staff_id = event.staff_id;
+
+    corp_token = await app.callFunction({
         name: "lx_get_corp_token",
         data: {
-            "company_id": company_id
+            "company_id": event.company_id
         }
     }).then(function(response) {
         return response.result;
     });
 
+    let func = eval(event.method)
+    return func(event.attributes);
+}
+
+async function store(attributes)
+{
     return await axios.post(process.env.LX_API_URL + "v1/courses",
         {
             "data": {

@@ -193,7 +193,7 @@
       "eip": "ENABLE"
     },
     {
-      "name": "lx_post_course",
+      "name": "lx_course",
       "envVariables": {
         "LX_API_URL": "{{env.LX_API_URL}}"
       },

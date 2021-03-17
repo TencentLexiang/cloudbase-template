@@ -32,8 +32,9 @@ async function store(attributes) {
     });
 
     let lx_course = await app.callFunction({
-        name: "lx_post_course",
+        name: "lx_course",
         data: {
+            "method": "store",
             "company_id": user.company_id,
             "staff_id": user.staff_id,
             "attributes": {

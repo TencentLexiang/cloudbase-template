@@ -47,15 +47,48 @@ export default {
         }));
       };
 
-      const response = await this.$app.callFunction({
-        name: 'api_post_course',
+      const id = await this.$app.callFunction({
+        name: 'third_course',
         data: {
-          file_id: indexFileId,
-          title: "today测试",
-          content: "content123",
-          category_id: "9c336b789de311e7aed15254002b6735"
+          method: "store",
+          attributes: {
+            file_id: indexFileId,
+            title: "today测试",
+            content: "content123",
+            category_id: "9c336b789de311e7aed15254002b6735"
+          }
+        }
+      }).then(function(res) {
+        return res.result.data.id;
+      });
+
+      await this.$app.callFunction({
+        name: 'third_course',
+        data: {
+          method: "show",
+          attributes: {
+            id: id
+          }
         }
       });
+
+      await this.$app.callFunction({
+        name: 'third_course',
+        data: {
+          method: "get_link",
+          attributes: {
+            id: id
+          }
+        }
+      });
+
+      await this.$app.callFunction({
+        name: 'third_course',
+        data: {
+          method: "index"
+        }
+      });
+
       console.log('api_upload_course response', response);
     }
   }

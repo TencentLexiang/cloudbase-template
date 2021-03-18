@@ -9,15 +9,26 @@ export default {
   async mounted() {
     const { courseId } = this.$route.params;
     const { result } = await this.$app.callFunction({
-        name: 'third_course',
-        data: {
-          method: "getLink",
-          attributes: {
-            id: courseId
-          }
+      name: 'third_course',
+      data: {
+        method: "getLink",
+        attributes: {
+          id: courseId
         }
-      });
-    window.location.href = result;
+      }
+    });
+    // const response = await this.$app.callFunction({
+    //   name: 'third_course',
+    //   data: {
+    //     method: "show",
+    //     attributes: {
+    //       id: courseId
+    //     }
+    //   }
+    // });
+    // console.log('response', response)
+    console.log('courseId && result', courseId, result);
+    courseId && result ? window.location.href = result : null;
   }
 }
 </script>

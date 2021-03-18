@@ -49,46 +49,17 @@ export default {
         }));
       };
 
-      const id = await this.$app.callFunction({
+      const response = await this.$app.callFunction({
         name: 'third_course',
         data: {
-          method: "store",
+          method: 'store',
           attributes: {
             file_id: indexFileId,
             file_path: indexFilePath,
-            title: "today测试",
-            content: "content123",
-            category_id: "9c336b789de311e7aed15254002b6735"
+            title: 'today测试',
+            content: 'content123',
+            category_id: '9c336b789de311e7aed15254002b6735'
           }
-        }
-      }).then(function(res) {
-        return res.result.id;
-      });
-
-      await this.$app.callFunction({
-        name: 'third_course',
-        data: {
-          method: "show",
-          attributes: {
-            id: id
-          }
-        }
-      });
-
-      await this.$app.callFunction({
-        name: 'third_course',
-        data: {
-          method: "get_link",
-          attributes: {
-            id: id
-          }
-        }
-      });
-
-      await this.$app.callFunction({
-        name: 'third_course',
-        data: {
-          method: "index"
         }
       });
 

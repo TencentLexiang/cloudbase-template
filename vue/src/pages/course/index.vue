@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="course in courses" :key="course._id" v-if="course.title" class="lists">
-      <router-link :to="`/courses/${course._id}`">{{ course.title }}</router-link>
+      <router-link :to="`/courses/${course._id}?company_from=${$company.id}`">{{ course.title }}</router-link>
       <div class="mt">
         <span class="font-sm secondary mr">{{ course.staff_id }}</span>
         <span class="font-sm secondary">{{ course.created_at }}</span>

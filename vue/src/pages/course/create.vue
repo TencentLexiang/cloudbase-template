@@ -12,7 +12,7 @@ export default {
   methods: {
     async onChange($event) {
       const files = $event.target.files;
-      const cloudPath = `${this.$company.id}/${randomString()}${new Date().format('yyyyMMddhhmmss')}`;
+      const cloudPath = `${this.$company.id}/${randomString()}${new Date().format('yyyyMMddhhmmss')}/`;
       console.log('files & cloudPath', files, cloudPath);
 
       let hasIndexFile = false;
@@ -28,6 +28,7 @@ export default {
 
       const filesReduce = arrReduceWidthNumber(Object.values(files), 5);
       let indexFileId = '';
+      let indexFilePath = '';
       console.log('filesReduce', filesReduce);
 
       for (const files of filesReduce) {
@@ -42,6 +43,7 @@ export default {
           });
           if (/^[^\/]+\/index.html$/.test(file.webkitRelativePath)) {
             indexFileId = fileID;
+            indexFilePath = cloudPath + file.webkitRelativePath;
           }
           console.log('uploadFile fileID', fileID);
         }));
@@ -53,6 +55,7 @@ export default {
           method: "store",
           attributes: {
             file_id: indexFileId,
+            file_path: indexFilePath,
             title: "today测试",
             content: "content123",
             category_id: "9c336b789de311e7aed15254002b6735"

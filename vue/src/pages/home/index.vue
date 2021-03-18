@@ -5,17 +5,7 @@
 <script>
 
 export default {
-  name: 'home',
-  async mounted() {
-    const response = await this.$app.callFunction({
-      name: "api_upload_course",
-      data: {
-      }
-    }).then(function(response) {
-      console.log(response.result);
-      return response.result;
-    })
-  }
+  name: 'home'
 }
 </script>
 

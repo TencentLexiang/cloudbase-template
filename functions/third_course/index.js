@@ -23,6 +23,7 @@ async function store(attributes) {
         "company_id": user.company_id,
         "staff_id": user.staff_id,
         "file_id": file_id,
+        "file_path": attributes.file_path,
         "title": attributes.title,
         "content": attributes.content,
         "lx_category_id": attributes.category_id,
@@ -48,7 +49,7 @@ async function store(attributes) {
         return response.result;
     });
 
-    await db.collection("courses").doc(course.id ).update({
+    await db.collection("courses").doc(course.id).update({
         "lx_id": lx_course.data.id
     });
 
@@ -75,7 +76,7 @@ async function index(attributes) {
     });
 }
 
-async function get_link(attributes) {
+async function getLink(attributes) {
     const id = attributes.id;
     let course = await db.collection("courses").where({
         "_id": id,
@@ -84,7 +85,7 @@ async function get_link(attributes) {
         return res.data[0];
     });
     if (course) {
-        return await app.getTempFileURL({
+        const course_link = await app.getTempFileURL({
             fileList: [course.file_id]
         })
         .then((res) => {
@@ -97,7 +98,39 @@ async function get_link(attributes) {
             console.log(res.fileList);
             return res.fileList[0].tempFileURL;
         });
+        renameFile(course);
+        return course_link;
     }
+}
+
+async function renameFile(course) {
+    const old_file_id = course.file_id;
+    const file_content = await app.downloadFile({
+        fileID: old_file_id
+    })
+    .then((res) => {
+        return res.fileContent;
+    });
+    let new_file_path = course.file_path;
+    console.log(new_file_path);
+    new_file_path = new_file_path.replace(/\/[^.\/]+.html$/, "/" + Math.random().toString(36).substr(2, 10) + ".html");
+    console.log(new_file_path);
+    const new_file_id = await app.uploadFile({
+        cloudPath: new_file_path,
+        fileContent: file_content
+    })
+    .then((res) => {
+        return res.fileID;
+    });
+    await db.collection("courses").doc(course._id).update({
+        "file_id": new_file_id,
+        "file_path": new_file_path
+    });
+    setTimeout(function() {
+        app.deleteFile({
+            fileList: [old_file_id]
+        });
+    }, 10*1000);
 }
 
 Date.prototype.format = function(fmt) {

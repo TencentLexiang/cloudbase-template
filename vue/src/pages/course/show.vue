@@ -11,7 +11,7 @@ export default {
     const { result } = await this.$app.callFunction({
         name: 'third_course',
         data: {
-          method: "get_link",
+          method: "getLink",
           attributes: {
             id: courseId
           }

@@ -202,6 +202,7 @@
     },
     {
       "name": "third_course",
+      "timeout": 30,
       "envVariables": {
         "PAGE_URL": "{{env.PAGE_URL}}"
       }

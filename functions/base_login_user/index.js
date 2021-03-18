@@ -1,4 +1,5 @@
 const cloudBase = require('@cloudbase/node-sdk');
+const moment = require('moment-timezone');
 
 const app = cloudBase.init({
     env: process.env.ENV_ID,
@@ -47,7 +48,7 @@ exports.main = async(event, context) => {
             "staff_id": user_info.staff_id,
             "company_id": user_info.company_id,
             "attributes": attributes,
-            "created_at": new Date().format("yyyy-MM-dd hh:mm:ss")
+            "created_at": moment().tz("Asia/Shanghai").format('YYYY-MM-DD HH:mm:ss')
         });
         user_id = res.id
     } else {

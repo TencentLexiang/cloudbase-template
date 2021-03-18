@@ -42,7 +42,7 @@ async function store(attributes) {
                 "title": attributes.title,
                 "content": attributes.content,
                 "category_id": attributes.category_id,
-                "video_link": process.env.PAGE_URL + "/courses/" + course.id + "?company_id=" + user.company_id
+                "video_link": process.env.PAGE_URL + "/courses/" + course.id + "/preview?company_id=" + user.company_id
             }
         }
     }).then(function(response) {

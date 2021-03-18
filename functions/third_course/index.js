@@ -76,7 +76,7 @@ async function index(attributes) {
     });
 }
 
-async function getLink(attributes) {
+async function preview(attributes) {
     const id = attributes.id;
     let course = await db.collection("courses").where({
         "_id": id,

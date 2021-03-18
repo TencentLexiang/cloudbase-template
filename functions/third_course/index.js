@@ -103,6 +103,37 @@ async function getLink(attributes) {
     }
 }
 
+async function destroy(attributes) {
+
+    let course = await db.collection("courses").where({
+        "_id": id,
+        "company_id": user.company_id
+    }).get().then(function(res) {
+        return res.data[0];
+    });
+    if (course) {
+        await app.deleteFile({
+            fileList: [course.file_id]
+        });
+
+        await app.callFunction({
+            name: "lx_course",
+            data: {
+                "method": "destroy",
+                "company_id": user.company_id,
+                "staff_id": user.staff_id,
+                "attributes": {
+                    "id": attributes.lx_id
+                }
+            }
+        });
+        await db.collection("courses").where({
+            "company_id": user.company_id,
+            "_id": attributes.id
+        }).remove();
+    }
+}
+
 async function renameFile(course) {
     const old_file_id = course.file_id;
     const file_content = await app.downloadFile({

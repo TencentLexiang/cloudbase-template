@@ -21,7 +21,8 @@ export default {
     const { result } = await this.$app.callFunction({
       name: 'third_course',
       data: {
-        method: 'index'
+        method: 'list',
+        attributes: {}
       }
     });
     this.courses = result;

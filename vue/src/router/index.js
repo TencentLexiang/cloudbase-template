@@ -20,9 +20,9 @@ const routes = [
     component: () => import(/* webpackChunkName: "pages/course/create" */ '../pages/course/create.vue'), 
   },
   {
-    path: '/courses/:courseId',
-    name: 'courseShow',
-    component: () => import(/* webpackChunkName: "pages/course/show" */ '../pages/course/show.vue'), 
+    path: '/courses/:courseId/preview',
+    name: 'coursePreview',
+    component: () => import(/* webpackChunkName: "pages/course/preview" */ '../pages/course/preview.vue'), 
   }
 ];
 

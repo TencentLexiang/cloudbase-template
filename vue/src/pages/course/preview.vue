@@ -1,17 +1,17 @@
 <template>
-  <div>show-course</div>
+  <div>course preview</div>
 </template>
 
 <script>
 
 export default {
-  name: 'course-show',
+  name: 'course-preview',
   async mounted() {
     const { courseId } = this.$route.params;
     const { result } = await this.$app.callFunction({
       name: 'third_course',
       data: {
-        method: "preview",
+        method: 'preview',
         attributes: {
           id: courseId
         }

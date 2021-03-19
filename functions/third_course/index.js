@@ -136,9 +136,15 @@ async function destroy(attributes) {
 }
 
 async function getCategories(attributes) {
-    const cateogries = await db.collection("course_categories").where({is_hidden : 0}).get().then(function(res) {
-        return res.data;
-    });
+    const cateogries = await db.collection("course_categories")
+        .where({
+            company_id: user.company_id,
+            is_hidden : 0
+        })
+        .get().then(function(res) {
+            return res.data;
+        }
+    );
     return list_to_tree(cateogries);
     
 }
@@ -197,6 +203,7 @@ async function refreshCategories(attributes) {
                 name: categories.data[i].attributes.name,
                 parent_id: parent_id,
                 children_count: categories.data[i].meta.children_count,
+                created_at: moment().tz("Asia/Shanghai").format('YYYY-MM-DD HH:mm:ss'),
                 is_hidden: 1
             });
             if (categories.data[i].meta.children_count > 0) {

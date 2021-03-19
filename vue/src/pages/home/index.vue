@@ -7,14 +7,14 @@
 export default {
   name: 'home',
   async mounted() {
-    const response = await this.$app.callFunction({
+    await this.$app.callFunction({
       name: 'third_course',
       data: {
         method: 'getCategories',
         attributes: {}
       }
     });
-    const response = await this.$app.callFunction({
+     await this.$app.callFunction({
       name: 'third_course',
       data: {
         method: 'refreshCategories',

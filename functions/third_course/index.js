@@ -14,7 +14,7 @@ exports.main = async(event, context) => {
         return res.data[0];
     });
     let func = eval(event.method)
-    return func(event.attributes);
+    return func(event.attributes ? event.attributes : {});
 }
 
 async function store(attributes) {

@@ -11,7 +11,7 @@
           "functionDefaultConfig": {
             "runtime": "Nodejs10.15",
             "handler": "index.main",
-            "timeout": 5,
+            "timeout": 60,
             "memorySize": 128,
             "envVariables": {
               "ENV_ID": "{{env.ENV_ID}}"
@@ -102,6 +102,9 @@
                   ]
                 }
               ]
+            },
+            {
+              "collectionName": "course_categories"
             }
           ]
         }
@@ -113,7 +116,13 @@
           "buildCommand": "cd vue && yarn build",
           "outputPath": "vue/dist",
           "cloudPath": "/",
-          "ignore": []
+          "ignore": [],
+          "envVariables": {
+            "REGION": "{{env.REGION}}",
+            "LX_SUITE_ID": "{{env.LX_SUITE_ID}}",
+            "LX_AUTH_URL": "{{env.LX_AUTH_URL}}",
+            "PERSISTENCE": "{{env.PERSISTENCE}}"
+          }
         }
       }
     },
@@ -201,8 +210,15 @@
       "eip": "ENABLE"
     },
     {
+      "name": "lx_category",
+      "envVariables": {
+        "LX_API_URL": "{{env.LX_API_URL}}"
+      },
+      "publicNet": "ENABLE",
+      "eip": "ENABLE"
+    },
+    {
       "name": "third_course",
-      "timeout": 30,
       "envVariables": {
         "PAGE_URL": "{{env.PAGE_URL}}"
       }

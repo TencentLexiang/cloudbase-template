@@ -64,7 +64,6 @@ async function destroy(attributes)
     return await axios.delete(process.env.LX_API_URL + "v1/courses/" + attributes.id,
         {
             headers: {
-                "Content-Type": "application/vnd.api+json",
                 "StaffID": staff_id,
                 "Authorization": "Bearer " + corp_token
             }

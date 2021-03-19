@@ -5,7 +5,23 @@
 <script>
 
 export default {
-  name: 'home'
+  name: 'home',
+  async mounted() {
+    const response = await this.$app.callFunction({
+      name: 'third_course',
+      data: {
+        method: 'getCategories',
+        attributes: {}
+      }
+    });
+    const response = await this.$app.callFunction({
+      name: 'third_course',
+      data: {
+        method: 'refreshCategories',
+        attributes: {}
+      }
+    });
+  }
 }
 </script>
 

@@ -106,8 +106,8 @@ async function preview(attributes) {
 
 async function destroy(attributes) {
 
-    let course = await db.collection("courses").where({
-        "_id": id,
+    const course = await db.collection("courses").where({
+        "_id": attributes.id,
         "company_id": user.company_id
     }).get().then(function(res) {
         return res.data[0];
@@ -124,15 +124,103 @@ async function destroy(attributes) {
                 "company_id": user.company_id,
                 "staff_id": user.staff_id,
                 "attributes": {
-                    "id": attributes.lx_id
+                    "id": course.lx_id
                 }
             }
         });
         await db.collection("courses").where({
             "company_id": user.company_id,
-            "_id": attributes.id
+            "_id": course._id
         }).remove();
     }
+}
+
+async function getCategories(attributes) {
+    const cateogries = await db.collection("course_categories").where({is_hidden : 0}).get().then(function(res) {
+        return res.data;
+    });
+    return list_to_tree(cateogries);
+    
+}
+
+function list_to_tree(list) {
+    var map = {}, node, roots = [], i;
+    
+    for (i = 0; i < list.length; i += 1) {
+      map[list[i].lx_id] = i; // initialize the map
+      list[i].children = []; // initialize the children
+    }
+    
+    for (i = 0; i < list.length; i += 1) {
+      node = list[i];
+      if (node.parent_id !== undefined) {
+        // if you have dangling branches check that map[node.parentId] exists
+        list[map[node.parent_id]].children.push(node);
+      } else {
+        roots.push(node);
+      }
+    }
+    return roots;
+  }
+
+  
+
+async function refreshCategories(attributes) {
+    const {parent_id} = attributes;
+    if (!attributes.add_only) {
+        await db.collection("course_categories")
+            .where({
+                is_hidden: 1
+            })
+            .remove();
+    }
+    let categories = await app.callFunction({
+        name: "lx_category",
+        data: {
+            "method": "list",
+            "company_id": user.company_id,
+            "staff_id": user.staff_id,
+            "attributes": {
+                "target_type": 'course',
+                parent_id
+            }
+        }
+    }).then(function(response) {
+        return response.result;
+    });
+    if (categories.data.length > 0) {
+        let collection = [];
+        for (i in categories.data) {
+            collection.push({
+                company_id: user.company_id,
+                lx_id: categories.data[i].id,
+                name: categories.data[i].attributes.name,
+                parent_id: parent_id,
+                children_count: categories.data[i].meta.children_count,
+                is_hidden: 1
+            });
+            if (categories.data[i].meta.children_count > 0) {
+                await refreshCategories({
+                    parent_id: categories.data[i].id,
+                    add_only: 1
+                });
+            }
+        }
+        await db.collection("course_categories").add(collection);
+        if (!attributes.add_only) {
+            await db.collection("course_categories")
+                .where({
+                    is_hidden: db.command.neq(1)
+                })
+                .remove();
+            await db.collection("course_categories")
+                .where({ is_hidden: 1 })
+                .update({
+                    is_hidden: 0
+                });
+        }
+    }
+    
 }
 
 async function renameFile(course) {

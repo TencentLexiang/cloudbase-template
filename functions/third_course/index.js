@@ -72,11 +72,18 @@ async function show(attributes) {
 async function list(attributes) {
     const page = attributes.page ? attributes.page : 1;
     const limit = attributes.limit ? attributes.limit : 20;
-    return await db.collection("courses").where({
-        "company_id": user.company_id
-    }).orderBy("created_at", "desc").skip((page - 1) * limit).limit(limit).get().then(function(res) {
-        return res.data;
-    });
+    return {
+        total: await db.collection("courses").where({
+            "company_id": user.company_id
+        }).count().then(function(res) {
+            return res.total;
+        }),
+        data: await db.collection("courses").where({
+            "company_id": user.company_id
+        }).orderBy("created_at", "desc").skip((page - 1) * limit).limit(limit).get().then(function(res) {
+            return res.data;
+        })
+    };
 }
 
 async function preview(attributes) {

@@ -17,6 +17,7 @@ Vue.config.productionTip = false;
 const app = cloudbase.init({
   env: process.env.ENV_ID,
   region: process.env.REGION,
+  timeout: 60000
 });
 const auth = app.auth({
   persistence: process.env.PERSISTENCE

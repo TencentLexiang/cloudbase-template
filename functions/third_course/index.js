@@ -33,7 +33,7 @@ async function store(attributes) {
         "updated_at": created_at
     });
 
-    let lx_course = await app.callFunction({
+    return await app.callFunction({
         name: "lx_course",
         data: {
             "method": "store",
@@ -47,16 +47,16 @@ async function store(attributes) {
             }
         }
     }).then(function(response) {
-        return response.result;
+        db.collection("courses").doc(course.id).update({
+            "lx_id": response.result.data.id
+        });
+        return {
+            id: course.id
+        };
+    }).catch((err) => {
+        db.collection("courses").doc(course.id).remove();
+        console.log(err);
     });
-
-    await db.collection("courses").doc(course.id).update({
-        "lx_id": lx_course.data.id
-    });
-
-    return {
-        id: course.id
-    };
 }
 
 async function show(attributes) {

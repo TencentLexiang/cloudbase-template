@@ -222,11 +222,16 @@ async function refreshCategories(attributes) {
         if (!attributes.looping) {
             await db.collection("course_categories")
                 .where({
+                    company_id: user.company_id,
                     version: db.command.neq(uuid)
                 })
                 .remove();
             await db.collection("course_categories")
-                .where({ is_hidden: 1, version: uuid })
+                .where({ 
+                    company_id: user.company_id,
+                    is_hidden: 1, 
+                    version: uuid 
+                })
                 .update({
                     is_hidden: 0
                 });

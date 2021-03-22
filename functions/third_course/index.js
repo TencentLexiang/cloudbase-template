@@ -144,7 +144,7 @@ async function destroy(attributes) {
     }
 }
 
-async function getCategories(attributes) {
+async function getCategories(attributes = {}) {
     const cateogries = await db.collection("course_categories")
         .where({
             company_id: user.company_id,
@@ -181,14 +181,8 @@ function list_to_tree(list) {
   
 
 async function refreshCategories(attributes) {
-    const {parent_id} = attributes;
-    if (!attributes.add_only) {
-        await db.collection("course_categories")
-            .where({
-                is_hidden: 1
-            })
-            .remove();
-    }
+    let {parent_id, uuid} = attributes;
+    uuid = uuid ? uuid : Math.random().toString(36).substr(2, 10);
     let categories = await app.callFunction({
         name: "lx_category",
         data: {
@@ -213,30 +207,34 @@ async function refreshCategories(attributes) {
                 parent_id: parent_id,
                 children_count: categories.data[i].meta.children_count,
                 created_at: moment().tz("Asia/Shanghai").format('YYYY-MM-DD HH:mm:ss'),
-                is_hidden: 1
+                is_hidden: 1,
+                version: uuid
             });
             if (categories.data[i].meta.children_count > 0) {
                 await refreshCategories({
                     parent_id: categories.data[i].id,
-                    add_only: 1
+                    looping: 1,
+                    version: uuid
                 });
             }
         }
         await db.collection("course_categories").add(collection);
-        if (!attributes.add_only) {
+        if (!attributes.looping) {
             await db.collection("course_categories")
                 .where({
-                    is_hidden: db.command.neq(1)
+                    version: db.command.neq(uuid)
                 })
                 .remove();
             await db.collection("course_categories")
-                .where({ is_hidden: 1 })
+                .where({ is_hidden: 1, version: uuid })
                 .update({
                     is_hidden: 0
                 });
         }
+    } else {
+        await db.collection("course_categories").remove();
     }
-    
+    return getCategories();
 }
 
 async function renameFile(course) {

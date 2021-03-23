@@ -16,7 +16,7 @@
               v-for="category in categories"
               :key="category._id"
               :label="category.name"
-              :value="category._id">
+              :value="category.lx_id">
             </el-option>
           </el-select>
           <span @click="refreshCategories"><i class="el-icon-refresh-right"></i></span>

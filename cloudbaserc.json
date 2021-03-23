@@ -52,10 +52,10 @@
         "LX_AUTH_URL": {
           "description": "腾讯乐享的登录授权地址（使用默认值即可）",
           "required": false,
-          "default": "https://lexiangla.net/connect/oauth2/authorize"
+          "default": "https://lexiangla.com/connect/oauth2/authorize"
         },
         "PERSISTENCE": {
-          "description": "客户端存储引擎（使用默认值即可）",
+          "description": "客户端存储引擎（可选：local，session）",
           "required": false,
           "default": "local"
         }

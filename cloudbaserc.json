@@ -124,14 +124,70 @@
             "PERSISTENCE": "{{env.PERSISTENCE}}"
           }
         }
+      },
+      "requirement": {
+        "environment": {
+          "LX_SUITE_ID": {
+            "description": "腾讯乐享的suite_id",
+            "required": true,
+            "default": "",
+            "validation": {
+              "rule": {
+                "type": "RegExp",
+                "pattern": "{32}",
+                "flag": "g"
+              },
+              "errorMessage": "必须是32位长度的字符串"
+            }
+          },
+          "LX_SUITE_SECRET": {
+            "description": "腾讯乐享的suite_secret",
+            "required": true,
+            "default": "",
+            "validation": {
+              "rule": {
+                "type": "RegExp",
+                "pattern": "{40}",
+                "flag": "g"
+              },
+              "errorMessage": "必须是40位长度的字符串"
+            }
+          },
+          "LX_CALLBACK_SECRET": {
+            "description": "腾讯乐享的callback_secret",
+            "required": true,
+            "default": "",
+            "validation": {
+              "rule": {
+                "type": "RegExp",
+                "pattern": "{40}",
+                "flag": "g"
+              },
+              "errorMessage": "必须是40位长度的字符串"
+            }
+          },
+          "LX_API_URL": {
+            "description": "腾讯乐享的API基础路径（使用默认值即可）",
+            "required": false,
+            "default": "https://lxapi.lexiangla.com/cgi-bin/"
+          },
+          "LX_AUTH_URL": {
+            "description": "腾讯乐享的登录授权地址（使用默认值即可）",
+            "required": false,
+            "default": "https://lexiangla.net/connect/oauth2/authorize"
+          },
+          "PERSISTENCE": {
+            "description": "客户端存储引擎（使用默认值即可）",
+            "required": false,
+            "default": "local"
+          }
+        }
       }
     },
     "hooks": {
       "preDeploy": {
         "type": "execCommand",
-        "commands": [
-          "cp ./tcb_custom_login_key.json ./functions/base_login_user/"
-        ]
+        "commands": []
       },
       "postDeploy": {
         "type": "callFunction",
@@ -218,10 +274,7 @@
       "eip": "ENABLE"
     },
     {
-      "name": "third_course",
-      "envVariables": {
-        "PAGE_URL": "{{env.PAGE_URL}}"
-      }
+      "name": "third_course"
     }
   ],
   "region": "ap-shanghai",

@@ -20,6 +20,7 @@ exports.main = async(event, context) => {
 async function store(attributes) {
     const file_id = attributes.file_id;
     const created_at = moment().tz("Asia/Shanghai").format('YYYY-MM-DD HH:mm:ss');
+    const preview_url = attributes.preview_url;
     const course = await db.collection("courses").add({
         "company_id": user.company_id,
         "staff_id": user.staff_id,
@@ -43,7 +44,7 @@ async function store(attributes) {
                 "title": attributes.title,
                 "content": attributes.content,
                 "category_id": attributes.category_id,
-                "video_link": process.env.PAGE_URL + "/courses/" + course.id + "/preview?company_id=" + user.company_id
+                "video_link": preview_url.replace(/\{COURSE_ID\}/, course.id).replace(/\{COMPANY_ID\}/, user.company_id)
             }
         }
     }).then(function(response) {

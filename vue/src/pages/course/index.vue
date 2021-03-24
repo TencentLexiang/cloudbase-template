@@ -2,7 +2,7 @@
   <div>
     <el-button type="primary" @click="onCreate">创建课件</el-button>
     <div v-for="(course, index) in courses" :key="course._id" v-if="course.title" class="lists" ref="courses">
-      <router-link :to="`/courses/${course._id}/preview?company_from=${$company.id}`">{{ course.title }}</router-link>
+      <router-link tag="a" target="_blank" :to="`/courses/${course._id}/preview?company_from=${$company.id}`">{{ course.title }}</router-link>
       <div class="font-sm secondary mt">
         <span class="mr">{{ course.staff_id }}</span>
         <span class="mr">{{ course.created_at }}</span>

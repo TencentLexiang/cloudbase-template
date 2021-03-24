@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "workspaces": [
+    "vue",
+    "functions/*"
+  ],
+  "scripts": {
+    "vue:serve": "cd vue && yarn serve",
+    "vue:build": "cd vue && yarn build",
+    "deploy": "tcb"
+  }
+}

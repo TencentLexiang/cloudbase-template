@@ -146,8 +146,8 @@
       "client": {
         "use": "@cloudbase/framework-plugin-website",
         "inputs": {
-          "installCommand": "cd vue && yarn install",
-          "buildCommand": "cd vue && yarn build",
+          "installCommand": "yarn",
+          "buildCommand": "yarn vue:build",
           "outputPath": "vue/dist",
           "cloudPath": "/",
           "ignore": [],

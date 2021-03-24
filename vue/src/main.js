@@ -2,6 +2,8 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
+window._tcbEnv = window._tcbEnv || {};
+
 import routes from './router/index.js';
 import App from './app.vue';
 
@@ -15,12 +17,12 @@ Vue.use(ElementUI);
 Vue.config.productionTip = false;
 
 const app = cloudbase.init({
-  env: process.env.ENV_ID,
-  region: process.env.REGION,
+  env: window._tcbEnv.ENV_ID || process.env.ENV_ID,
+  region: window._tcbEnv.REGION || process.env.REGION,
   timeout: 60000
 });
 const auth = app.auth({
-  persistence: process.env.PERSISTENCE
+  persistence: window._tcbEnv.PERSISTENCE || process.env.PERSISTENCE
 });
 Vue.prototype.$app = app;
 Vue.prototype.$auth = auth;
@@ -54,8 +56,8 @@ router.beforeEach(async (to, from, next) => {
 });
 
 function loginUrl(company_id = null) {
-  const redirect_uri = `${process.env.PAGE_URL}/auth-callback`;
-  let params = `suite_id=${process.env.LX_SUITE_ID}&redirect_uri=${encodeURIComponent(redirect_uri)}&response_type=code&scope=snsapi_userinfo`;
+  const redirect_uri = `${window._tcbEnv.PAGE_URL || process.env.PAGE_URL}/auth-callback`;
+  let params = `suite_id=${window._tcbEnv.LX_SUITE_ID || process.env.LX_SUITE_ID}&redirect_uri=${encodeURIComponent(redirect_uri)}&response_type=code&scope=snsapi_userinfo`;
 
   if (company_id) {
     params = `${params}&company_id=${company_id}`;
@@ -63,7 +65,7 @@ function loginUrl(company_id = null) {
 
   sessionStorage.setItem('intendUrl', encodeURIComponent(window.location));
 
-  return `${process.env.LX_AUTH_URL}?${params}`;
+  return `${window._tcbEnv.LX_AUTH_URL || process.env.LX_AUTH_URL}?${params}`;
 }
 
 new Vue({

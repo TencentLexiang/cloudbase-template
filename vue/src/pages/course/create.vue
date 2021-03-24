@@ -23,9 +23,10 @@
         </el-form-item>
         <el-form-item label="上传课件" prop="file_id">
           <input type="file" webkitdirectory @change="onFileUpload" />
+          <el-progress :percentage="uploadPercent" v-if="uploadPercent"></el-progress>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">立即创建</el-button>
+          <el-button type="primary" @click="onSubmit" :disabled="isSubmiting">立即创建</el-button>
           <el-button @click="goBack">取消</el-button>
         </el-form-item>
       </el-form>
@@ -46,8 +47,10 @@ export default {
         category_id: '',
         file_id: '',
         file_path: '',
+        preview_url: '',
       },
       categories: {},
+      files: [],
       rules: {
         title: [
           { required: true, message: '请输入课件标题', trigger: 'blur' },
@@ -58,8 +61,15 @@ export default {
         file_id: [
           { required: true, message: '请上传课件', trigger: 'change' },
         ]
-      }
+      },
+      isSubmiting: false,
+      uploadFileCount: 0,
     };
+  },
+  computed: {
+    uploadPercent() {
+      return !this.files.length ? 0 : Number((this.uploadFileCount / this.files.length * 100).toFixed(2));
+    },
   },
   mounted () {
     this.getCategories();
@@ -78,19 +88,20 @@ export default {
       this.categories = result;
     },
     async refreshCategories() {
+      this.isSubmiting = true;
       const { result } = await this.$app.callFunction({
         name: 'third_course',
         data: {
           method: 'refreshCategories',
           attributes: {}
         }
-      });
+      }).catch(() => this.isSubmiting = false);
       this.categories = result;
+      this.isSubmiting = false;
     },
-    async onFileUpload($event) {
+    onFileUpload($event) {
       const files = $event.target.files;
-      const cloudPath = `${this.$company.id}/${randomString()}${new Date().format('yyyyMMddhhmmss')}/`;
-      console.log('files & cloudPath', files, cloudPath);
+      console.log('files', files);
 
       let hasIndexFile = false;
       files.forEach(file => {
@@ -102,12 +113,17 @@ export default {
         alert('根目录没有index.html文件');
         return;
       }
-
-      const filesReduce = arrReduceWidthNumber(Object.values(files), 5);
+      this.files = files;
+      this.course.file_id = 'fake_id';
+    },
+    async onFileUploading() {
+      const cloudPath = `${this.$company.id}/${randomString()}${new Date().format('yyyyMMddhhmmss')}/`;
+      const filesReduce = arrReduceWidthNumber(Object.values(this.files), 5);
+      console.log('cloudPath', cloudPath);
       console.log('filesReduce', filesReduce);
 
       for (const files of filesReduce) {
-        console.log('fiels', files)
+        console.log('files', files)
         await Promise.all(Object.keys(files).map(async (key) => {
           const file = files[key];
           const { fileID } = await this.$app.uploadFile({
@@ -119,16 +135,19 @@ export default {
           if (/^[^\/]+\/index.html$/.test(file.webkitRelativePath)) {
             this.course.file_id = fileID;
             this.course.file_path = cloudPath + file.webkitRelativePath;
+            this.course.preview_url = `${window._tcbEnv.PAGE_URL || process.env.PAGE_URL}/courses/{COURSE_ID}/preview?company_id={COMPANY_ID}`;
           }
+          this.uploadFileCount++;
           console.log('uploadFile fileID', fileID);
         }));
       }
     },
-    onSubmit() {
+    async onSubmit() {
       this.$refs['courseForm'].validate(async (valid) => {
         if (!valid) return false;
 
-        // this.course.category_id = '9c336b789de311e7aed15254002b6735';
+        this.isSubmiting = true;
+        await this.onFileUploading();
         const response = await this.$app.callFunction({
           name: 'third_course',
           data: {
@@ -136,6 +155,7 @@ export default {
             attributes: this.course,
           }
         });
+        this.isSubmiting = false;
         this.goBack();
         console.log('api_upload_course response', response);
       });

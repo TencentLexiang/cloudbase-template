@@ -1,4 +1,4 @@
-const storage = process.env.PERSISTENCE === 'local' ? localStorage : sessionStorage;
+const storage = (window._tcbEnv && window._tcbEnv.PERSISTENCE || process.env.PERSISTENCE) === 'local' ? localStorage : sessionStorage;
 
 const lxStorage = {
   getItem: (key) => storage.getItem(key),

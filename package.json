@@ -1,8 +1,7 @@
 {
   "private": true,
   "workspaces": [
-    "vue",
-    "functions/*"
+    "vue"
   ],
   "scripts": {
     "vue:serve": "cd vue && yarn serve",

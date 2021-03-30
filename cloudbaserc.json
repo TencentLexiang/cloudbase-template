@@ -188,64 +188,10 @@
       }
     },
     {
-      "name": "lx_get_suite_access_token",
+      "name": "lx_apis",
       "envVariables": {
         "LX_SUITE_ID": "{{env.LX_SUITE_ID}}",
         "LX_SUITE_SECRET": "{{env.LX_SUITE_SECRET}}",
-        "LX_API_URL": "{{env.LX_API_URL}}"
-      },
-      "triggers": [
-        {
-          "name": "lx_get_suite_access_token",
-          "type": "timer",
-          "config": "0 */30 * * * * *"
-        }
-      ],
-      "publicNet": "ENABLE",
-      "eip": "ENABLE"
-    },
-    {
-      "name": "lx_get_corp_info",
-      "envVariables": {
-        "LX_API_URL": "{{env.LX_API_URL}}"
-      },
-      "publicNet": "ENABLE",
-      "eip": "ENABLE"
-    },
-    {
-      "name": "lx_get_user_info",
-      "envVariables": {
-        "LX_API_URL": "{{env.LX_API_URL}}"
-      },
-      "publicNet": "ENABLE",
-      "eip": "ENABLE"
-    },
-    {
-      "name": "lx_get_corp_token",
-      "envVariables": {
-        "LX_API_URL": "{{env.LX_API_URL}}"
-      },
-      "triggers": [
-        {
-          "name": "lx_get_corp_token",
-          "type": "timer",
-          "config": "0 */30 * * * * *"
-        }
-      ],
-      "publicNet": "ENABLE",
-      "eip": "ENABLE"
-    },
-    {
-      "name": "lx_course",
-      "envVariables": {
-        "LX_API_URL": "{{env.LX_API_URL}}"
-      },
-      "publicNet": "ENABLE",
-      "eip": "ENABLE"
-    },
-    {
-      "name": "lx_category",
-      "envVariables": {
         "LX_API_URL": "{{env.LX_API_URL}}"
       },
       "publicNet": "ENABLE",

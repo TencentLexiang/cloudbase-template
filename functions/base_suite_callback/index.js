@@ -13,7 +13,7 @@ exports.main = async (event, context) => {
         var hash = crypto.createHash("sha1").update(body.nonce + process.env.LX_CALLBACK_SECRET + body.timestamp);
         const sign = hash.digest('hex');
 
-        if (new Date().getTime()/1000 - body.timestamp > 5 || sign !== body.sign) {
+        if (moment().tz("Asia/Shanghai")/1000 - body.timestamp > 5 || sign !== body.sign) {
             return "error";
         }
         console.log(body);
@@ -24,12 +24,13 @@ exports.main = async (event, context) => {
             db.collection("lx_suites").doc("suite_ticket").set({
                 "value": body.attributes.suite_ticket,
                 "expires_in": 1800,
-                "created_at": new Date().getTime()
+                "created_at": moment().tz("Asia/Shanghai")
             });
         } else if (body.action === "service/create_auth") {
             app.callFunction({
-                name: "lx_get_corp_info",
+                name: "lx_apis",
                 data: {
+                    "method": "get_corp_info",
                     "auth_code": body.attributes.auth_code
                 }
             }).then(function(response) {
@@ -44,13 +45,6 @@ exports.main = async (event, context) => {
                     "attributes": response.result,
                     "created_at": moment().tz("Asia/Shanghai").format('YYYY-MM-DD HH:mm:ss')
                 });
-                // 预生成corp_token
-                app.callFunction({
-                    name: "lx_get_corp_token",
-                    data: {
-                        "company_id": company_id
-                    }
-                })
             });
         } else if (body.action === "service/cancel_auth") {
             db.collection("companies").doc(body.attributes.company_id).remove();

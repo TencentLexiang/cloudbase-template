@@ -35,15 +35,16 @@ async function store(attributes) {
     });
 
     return await app.callFunction({
-        name: "lx_course",
+        name: "lx_apis",
         data: {
-            "method": "store",
+            "method": "course.store",
             "company_id": user.company_id,
             "staff_id": user.staff_id,
             "attributes": {
                 "title": attributes.title,
                 "content": attributes.content,
                 "category_id": attributes.category_id,
+                "media_type": 5,
                 "video_link": preview_url.replace(/\{COURSE_ID\}/, course.id).replace(/\{COMPANY_ID\}/, user.company_id)
             }
         }
@@ -128,9 +129,9 @@ async function destroy(attributes) {
         });
 
         await app.callFunction({
-            name: "lx_course",
+            name: "lx_apis",
             data: {
-                "method": "destroy",
+                "method": "course.destroy",
                 "company_id": user.company_id,
                 "staff_id": user.staff_id,
                 "attributes": {
@@ -185,9 +186,9 @@ async function refreshCategories(attributes) {
     let {parent_id, uuid} = attributes;
     uuid = uuid ? uuid : Math.random().toString(36).substr(2, 10);
     let categories = await app.callFunction({
-        name: "lx_category",
+        name: "lx_apis",
         data: {
-            "method": "list",
+            "method": "category.list",
             "company_id": user.company_id,
             "staff_id": user.staff_id,
             "attributes": {

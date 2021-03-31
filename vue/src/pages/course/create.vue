@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     goBack() {
-      this.$router.push(`/courses?company_from=${this.$company.id}`);
+      this.$router.push(`/courses?company_id=${this.$company.id}`);
     },
     async getCategories() {
       const { result } = await this.$app.callFunction({

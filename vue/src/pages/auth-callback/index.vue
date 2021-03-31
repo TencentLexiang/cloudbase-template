@@ -16,11 +16,11 @@ export default {
         code
       }
     });
-    const { ticket, staff_attributes } = response.result.data;
+    const { ticket, staff_attributes, company_attributes } = response.result.data;
     console.log('base_login_user callback', response.result.data);
     await this.$auth.customAuthProvider().signIn(ticket);
 
-    lxStorage.setItem('companyId', staff_attributes.company_id);
+    lxStorage.setItem('companyId', company_attributes.id);
 
     const user = this.$auth.currentUser;
     user.update({

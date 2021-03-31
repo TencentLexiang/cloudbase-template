@@ -7,12 +7,23 @@ const app = cloudBase.init({
 const auth = app.auth();
 const db = app.database();
 let user;
+let company;
 
 exports.main = async(event, context) => {
     const { userInfo } = await auth.getEndUserInfo();
     user = await db.collection("users").doc(userInfo.customUserId).get().then(function(res) {
         return res.data[0];
     });
+    company = await db.collection("companies").doc(user.company_id).get().then(function(res) {
+        return res.data[0];
+    });
+    if (!company || !company.enabled) {
+        return {
+            "code": 10001,
+            "msg": "当前乐享企业未开启应用"
+        }
+    }
+
     let func = eval(event.method)
     return func(event.attributes ? event.attributes : {});
 }
@@ -53,21 +64,39 @@ async function store(attributes) {
             "lx_id": response.result.data.id
         });
         return {
-            id: course.id
+            "code": 0,
+            "msg": "ok",
+            "id": course.id
         };
     }).catch((err) => {
         db.collection("courses").doc(course.id).remove();
-        console.log(err);
+        console.log(err.response.data);
+        return {
+            "code": 1,
+            "msg": "fail"
+        };
     });
 }
 
 async function show(attributes) {
     const id = attributes.id;
-    return await db.collection("courses").where({
+    return await db.collection("courses")
+    .where({
         "_id": id,
         "company_id": user.company_id
-    }).get().then(function(res) {
-        return res.data[0];
+    })
+    .get()
+    .then(function(res) {
+        let result = res.data[0];
+        result.code = 0;
+        result.msg = "ok";
+        return result;
+    })
+    .catch((err) => {
+        return {
+            "code": 1,
+            "msg": "fail"
+        };
     });
 }
 
@@ -75,6 +104,8 @@ async function list(attributes) {
     const page = attributes.page ? attributes.page : 1;
     const limit = attributes.limit ? attributes.limit : 20;
     return {
+        code: 0,
+        msg: "ok",
         total: await db.collection("courses").where({
             "company_id": user.company_id
         }).count().then(function(res) {
@@ -89,13 +120,7 @@ async function list(attributes) {
 }
 
 async function preview(attributes) {
-    const id = attributes.id;
-    let course = await db.collection("courses").where({
-        "_id": id,
-        "company_id": user.company_id
-    }).get().then(function(res) {
-        return res.data[0];
-    });
+    const course = await show(attributes);
     if (course) {
         const course_link = await app.getTempFileURL({
             fileList: [course.file_id]

@@ -13,7 +13,7 @@ exports.main = async (event, context) => {
         var hash = crypto.createHash("sha1").update(body.nonce + process.env.LX_CALLBACK_SECRET + body.timestamp);
         const sign = hash.digest('hex');
 
-        if (moment().tz("Asia/Shanghai")/1000 - body.timestamp > 5 || sign !== body.sign) {
+        if (moment().tz("Asia/Shanghai").valueOf()/1000 - body.timestamp > 5 || sign !== body.sign) {
             return "error";
         }
         console.log(body);
@@ -24,7 +24,7 @@ exports.main = async (event, context) => {
             db.collection("lx_suites").doc("suite_ticket").set({
                 "value": body.attributes.suite_ticket,
                 "expires_in": 1800,
-                "created_at": moment().tz("Asia/Shanghai")
+                "created_at": moment().tz("Asia/Shanghai").valueOf()
             });
         } else if (body.action === "service/create_auth") {
             app.callFunction({
@@ -33,21 +33,23 @@ exports.main = async (event, context) => {
                     "method": "get_corp_info",
                     "auth_code": body.attributes.auth_code
                 }
-            }).then(function(response) {
-                console.log(response);
+            })
+            .then(function(response) {
                 const company_id = response.result.company_id;
                 const permanent_code = response.result.permanent_code;
                 delete response.result.company_id;
                 delete response.result.permanent_code;
-                db.collection("companies").add({
-                    "_id": company_id,
+                db.collection("companies").doc(company_id).set({
                     "permanent_code": permanent_code,
                     "attributes": response.result,
-                    "created_at": moment().tz("Asia/Shanghai").format('YYYY-MM-DD HH:mm:ss')
+                    "created_at": moment().tz("Asia/Shanghai").format('YYYY-MM-DD HH:mm:ss'),
+                    "enabled": 1
                 });
             });
         } else if (body.action === "service/cancel_auth") {
-            db.collection("companies").doc(body.attributes.company_id).remove();
+            await db.collection("companies").doc(body.attributes.company_id).update({
+                "enabled": 0
+            });
         }
         return "success";
     }

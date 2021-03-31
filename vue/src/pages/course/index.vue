@@ -2,11 +2,11 @@
   <div>
     <el-button type="primary" @click="onCreate">创建课件</el-button>
     <div v-for="(course, index) in courses" :key="course._id" v-if="course.title" class="lists" ref="courses">
-      <router-link tag="a" target="_blank" :to="`/courses/${course._id}/preview?company_from=${$company.id}`">{{ course.title }}</router-link>
+      <router-link tag="a" target="_blank" :to="`/courses/${course._id}/preview?company_id=${$company.id}`">{{ course.title }}</router-link>
       <div class="font-sm secondary mt">
         <span class="mr">{{ course.staff_id }}</span>
         <span class="mr">{{ course.created_at }}</span>
-        <router-link :to="`/courses/${course._id}/preview?company_from=${$company.id}`" class="mr">预览</router-link>
+        <router-link :to="`/courses/${course._id}/preview?company_id=${$company.id}`" class="mr">预览</router-link>
         <a href="javascript:void(0);" @click="onDestory(course._id, index)">删除</a>
       </div>
     </div>
@@ -47,7 +47,7 @@ export default {
       });
       this.courses = result.data;
       this.total = result.total;
-      page ? this.$router.push(`/courses?page=${page}&company_from${this.$company.id}`) : null;
+      page ? this.$router.push(`/courses?page=${page}&company_id=${this.$company.id}`) : null;
     },
     async onDestory(id, index) {
       if (confirm('你确定删除吗？')) {
@@ -64,7 +64,7 @@ export default {
       }
     },
     onCreate() {
-      this.$router.push(`/courses/create?company_from=${this.$company.id}`);
+      this.$router.push(`/courses/create?company_id=${this.$company.id}`);
     }
   },
 };

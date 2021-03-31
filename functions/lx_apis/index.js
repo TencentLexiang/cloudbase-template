@@ -28,7 +28,7 @@ exports.main = async(event, context) => {
 
 const get_corp_token = async(company_id, refresh = false) => {
     let ref = await db.collection("lx_suites").doc("company_" + company_id + "_token").get();
-    if (ref.data[0] && moment().tz("Asia/Shanghai") < ref.data[0].created_at + (ref.data[0].expires_in - 2400) * 1000 && !refresh) {
+    if (ref.data[0] && moment().tz("Asia/Shanghai").valueOf() < ref.data[0].created_at + (ref.data[0].expires_in - 2400) * 1000 && !refresh) {
         // corp_token DB存在且距离过期还有40分钟以上，可直接取出使用
         return ref.data[0].value;
     }
@@ -49,7 +49,7 @@ const get_corp_token = async(company_id, refresh = false) => {
         db.collection("lx_suites").doc("company_" + company_id + "_token").set({
             "value": response.data.access_token,
             "expires_in": response.data.expires_in,
-            "created_at": moment().tz("Asia/Shanghai")
+            "created_at": moment().tz("Asia/Shanghai").valueOf()
         });
         return response.data.access_token;
     })
@@ -61,7 +61,7 @@ const get_corp_token = async(company_id, refresh = false) => {
 
 const get_suite_access_token = async(refresh = false) => {
     let ref = await db.collection("lx_suites").doc("suite_access_token").get();
-    if (ref.data[0] && moment().tz("Asia/Shanghai") < ref.data[0].created_at + (ref.data[0].expires_in - 2400) * 1000  && !refresh) {
+    if (ref.data[0] && moment().tz("Asia/Shanghai").valueOf() < ref.data[0].created_at + (ref.data[0].expires_in - 2400) * 1000  && !refresh) {
         // suite_access_token DB存在且距离过期还有40分钟以上，可直接取出使用
         return ref.data[0].value;
     }
@@ -86,7 +86,7 @@ const get_suite_access_token = async(refresh = false) => {
         db.collection("lx_suites").doc("suite_access_token").set({
             "value": response.data.suite_access_token,
             "expires_in": response.data.expires_in,
-            "created_at": moment().tz("Asia/Shanghai")
+            "created_at": moment().tz("Asia/Shanghai").valueOf()
         });
         return response.data.suite_access_token;
     })

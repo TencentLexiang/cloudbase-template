@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@cloudbase/manager-node": "^3.9.0"
+    "@cloudbase/manager-node": "^3.9.0",
+    "@cloudbase/node-sdk": "^2.4.8"
   }
 }

@@ -170,7 +170,9 @@
       "postDeploy": {
         "type": "callFunction",
         "functions": [
-          "base_init"
+          {
+            "functionName": "base_init"
+          }
         ]
       }
     }

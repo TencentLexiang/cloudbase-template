@@ -169,7 +169,9 @@
       },
       "postDeploy": {
         "type": "callFunction",
-        "functions": []
+        "functions": [
+          "base_init"
+        ]
       }
     }
   },
@@ -186,6 +188,9 @@
       "aclRule": {
         "invoke": true
       }
+    },
+    {
+      "name": "base_init"
     },
     {
       "name": "lx_apis",

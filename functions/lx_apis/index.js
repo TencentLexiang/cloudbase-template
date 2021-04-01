@@ -19,6 +19,8 @@ exports.main = async(event, context) => {
             return await get_corp_info(event.auth_code);
         case "get_user_info":
             return await get_user_info(event.code);
+        case "init_config":
+            return await init_config(event.attributes);
     }
     const staff_id = event.staff_id;
     const corp_token = await get_corp_token(event.company_id);
@@ -119,6 +121,25 @@ const get_user_info = async(code) => {
     .then(function(response) {
         console.log(response.data);
         return response.data.data;
+    })
+    .catch((err) => {
+        console.log(err.response.data);
+        throw new Error(err);
+    });
+}
+
+const init_config = async(attributes) => {
+    return await axios.post(process.env.LX_API_URL + "service/init", {
+        "suite_id": process.env.LX_SUITE_ID,
+        "suite_secret": process.env.LX_SUITE_SECRET,
+        "redirect_domain": attributes.redirect_domain,
+        "manage_url": attributes.manage_url,
+        "homepage": attributes.homepage,
+        "callback_url": attributes.callback_url,
+    })
+    .then(function(response) {
+        console.log(response.data);
+        return true;
     })
     .catch((err) => {
         console.log(err.response.data);

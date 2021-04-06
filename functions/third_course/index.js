@@ -59,22 +59,23 @@ async function store(attributes) {
                 "video_link": preview_url.replace(/\{COURSE_ID\}/, course.id).replace(/\{COMPANY_ID\}/, user.company_id)
             }
         }
-    }).then(function(response) {
-        db.collection("courses").doc(course.id).update({
-            "lx_id": response.result.data.id
-        });
-        return {
-            "code": 0,
-            "msg": "ok",
-            "id": course.id
-        };
-    }).catch((err) => {
-        db.collection("courses").doc(course.id).remove();
-        console.log(err.response.data);
-        return {
-            "code": 1,
-            "msg": "fail"
-        };
+    }).then((res) => {
+        if (res.result.status == 201) {
+            db.collection("courses").doc(course.id).update({
+                "lx_id": res.result.data.data.id
+            });
+            return {
+                "code": 0,
+                "msg": "ok",
+                "id": course.id
+            };
+        } else {
+            db.collection("courses").doc(course.id).remove();
+            return {
+                "code": 1,
+                "msg": "fail"
+            };
+        } 
     });
 }
 
@@ -91,12 +92,6 @@ async function show(attributes) {
         result.code = 0;
         result.msg = "ok";
         return result;
-    })
-    .catch((err) => {
-        return {
-            "code": 1,
-            "msg": "fail"
-        };
     });
 }
 
@@ -141,18 +136,8 @@ async function preview(attributes) {
 }
 
 async function destroy(attributes) {
-
-    const course = await db.collection("courses").where({
-        "_id": attributes.id,
-        "company_id": user.company_id
-    }).get().then(function(res) {
-        return res.data[0];
-    });
+    const course = await show(attributes);
     if (course) {
-        await app.deleteFile({
-            fileList: [course.file_id]
-        });
-
         await app.callFunction({
             name: "lx_apis",
             data: {
@@ -163,11 +148,45 @@ async function destroy(attributes) {
                     "id": course.lx_id
                 }
             }
+        }).then((res) => {
+            if (res.result.status != 404 && res.result.status != 204) {
+                throw new Error("乐享素材删除失败");
+            }
         });
         await db.collection("courses").where({
             "company_id": user.company_id,
             "_id": course._id
         }).remove();
+        await app.deleteFile({
+            fileList: [course.file_id]
+        });
+    }
+}
+
+async function askForDestroy(attributes) {
+    const course = await show(attributes);
+    const res = await app.callFunction({
+        name: "lx_apis",
+        data: {
+            "method": "course.show",
+            "company_id": user.company_id,
+            "staff_id": user.staff_id,
+            "attributes": {
+                "id": course.lx_id
+            }
+        }
+    }).then((res) => {
+        return res.result.data;
+    });
+    if (res.data && res.data.relationships && res.data.relationships.classes) {
+        return {
+            code: 1,
+            msg: "素材已关联课程，无法删除，请到乐享平台删除"
+        };
+    }
+    return {
+        code: 0,
+        msg: "ok"
     }
 }
 
@@ -222,7 +241,7 @@ async function refreshCategories(attributes) {
             }
         }
     }).then(function(response) {
-        return response.result;
+        return response.result.data;
     });
     if (categories.data.length > 0) {
         let collection = [];

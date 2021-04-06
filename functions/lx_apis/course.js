@@ -29,11 +29,13 @@ exports.store = async(attributes, headers) => {
     })
     .then((response) => {
         console.log(response.data);
-        return response.data;
+        let {status, data} = response;
+        return {status, data};
     })
     .catch((err) => {
         console.log(err.response.data);
-        throw new Error(err);
+        let {status, data} = err.response;
+        return {status, data};
     });
 }
 
@@ -46,10 +48,30 @@ exports.destroy = async(attributes, headers) => {
     })
     .then((response) => {
         console.log(response.data);
-        return response.data;
+        let {status, data} = response;
+        return {status, data};
     })
     .catch((err) => {
         console.log(err.response.data);
-        throw new Error(err);
+        let {status, data} = err.response;
+        return {status, data};
+    });
+}
+
+exports.show = async(attributes, headers) => {
+    return await axios.get(process.env.LX_API_URL + "v1/courses/" + attributes.id, {
+        "headers": {
+            "Authorization": "Bearer " + headers.corp_token
+        }
+    })
+    .then((response) => {
+        console.log(response.data);
+        let {status, data} = response;
+        return {status, data};
+    })
+    .catch((err) => {
+        console.log(err.response.data);
+        let {status, data} = err.response;
+        return {status, data};
     });
 }

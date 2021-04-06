@@ -201,6 +201,9 @@
         "LX_SUITE_SECRET": "{{env.LX_SUITE_SECRET}}",
         "LX_API_URL": "{{env.LX_API_URL}}"
       },
+      "aclRule": {
+        "invoke": false
+      },
       "publicNet": "ENABLE",
       "eip": "ENABLE"
     },

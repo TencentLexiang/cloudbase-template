@@ -57,7 +57,7 @@ const get_corp_token = async(company_id, refresh = false) => {
     })
     .catch((err) => {
         console.log(err.response.data);
-        throw new Error(err);
+        throw err;
     });
 }
 
@@ -94,7 +94,7 @@ const get_suite_access_token = async(refresh = false) => {
     })
     .catch((err) => {
         console.log(err.response.data);
-        throw new Error(err);
+        throw err;
     });
 }
 
@@ -109,7 +109,7 @@ const get_corp_info = async(auth_code) => {
     })
     .catch((err) => {
         console.log(err.response.data);
-        throw new Error(err);
+        throw err;
     });
 }
 
@@ -124,7 +124,7 @@ const get_user_info = async(code) => {
     })
     .catch((err) => {
         console.log(err.response.data);
-        throw new Error(err);
+        throw err;
     });
 }
 
@@ -143,6 +143,6 @@ const init_config = async(attributes) => {
     })
     .catch((err) => {
         console.log(err.response.data);
-        throw new Error(err);
+        throw err;
     });
 }

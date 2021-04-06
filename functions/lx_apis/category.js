@@ -14,10 +14,12 @@ exports.list = async(attributes, headers) =>
     })
     .then((response) => {
         console.log(response.data);
-        return response.data;
+        let {status, data} = response;
+        return {status, data};
     })
     .catch((err) => {
         console.log(err.response.data);
-        throw new Error(err);
+        let {status, data} = err.response;
+        return {status, data};
     });
 }

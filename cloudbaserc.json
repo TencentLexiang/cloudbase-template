@@ -153,7 +153,7 @@
           "ignore": [],
           "envVariables": {
             "ENV_ID": "{{env.ENV_ID}}",
-            "REGION": "{{env.REGION}}",
+            "REGION": "{{env.REGION}}",            
             "PAGE_URL": "{{env.PAGE_URL}}",
             "LX_SUITE_ID": "{{env.LX_SUITE_ID}}",
             "LX_AUTH_URL": "{{env.LX_AUTH_URL}}",
@@ -206,9 +206,6 @@
       },
       "publicNet": "ENABLE",
       "eip": "ENABLE"
-    },
-    {
-      "name": "third_course"
     }
   ],
   "region": "ap-shanghai",

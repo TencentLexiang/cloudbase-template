@@ -17,7 +17,7 @@ Vue.use(ElementUI);
 Vue.config.productionTip = false;
 
 const app = cloudbase.init({
-  env: window._tcbEnv.ENV_ID || process.env.ENV_ID,
+  env: window._tcbEnv.TCB_ENV_ID || process.env.ENV_ID,
   region: window._tcbEnv.REGION || process.env.REGION,
   timeout: 60000
 });
@@ -56,7 +56,7 @@ router.beforeEach(async (to, from, next) => {
 });
 
 function loginUrl(company_id = null) {
-  const redirect_uri = `${window._tcbEnv.PAGE_URL || process.env.PAGE_URL}/auth-callback`;
+  const redirect_uri = `${window._tcbEnv.TCB_SERVICE_DOMAIN || process.env.PAGE_URL}/auth-callback`;
   let params = `suite_id=${window._tcbEnv.LX_SUITE_ID || process.env.LX_SUITE_ID}&redirect_uri=${encodeURIComponent(redirect_uri)}&response_type=code&scope=snsapi_userinfo`;
 
   if (company_id) {

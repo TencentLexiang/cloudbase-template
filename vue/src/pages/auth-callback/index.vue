@@ -22,6 +22,8 @@ export default {
 
     lxStorage.setItem('companyId', company_attributes.id);
 
+    console.log('this.$auth', this.$auth);
+
     const user = this.$auth.currentUser;
     user.update({
       nickName: staff_attributes.name,

@@ -31,7 +31,7 @@ Vue.prototype.$company = { id: lxStorage.getItem('companyId') || '' };
 
 const router = new VueRouter({
   base: '/',
-  mode: 'history',
+  mode: 'hash',
   routes,
 });
 
@@ -56,7 +56,7 @@ router.beforeEach(async (to, from, next) => {
 });
 
 function loginUrl(company_id = null) {
-  const redirect_uri = `${window._tcbEnv.TCB_SERVICE_DOMAIN || process.env.PAGE_URL}/auth-callback`;
+  const redirect_uri = `${location.origin}/auth-callback`;
   let params = `suite_id=${window._tcbEnv.LX_SUITE_ID || process.env.LX_SUITE_ID}&redirect_uri=${encodeURIComponent(redirect_uri)}&response_type=code&scope=snsapi_userinfo`;
 
   if (company_id) {

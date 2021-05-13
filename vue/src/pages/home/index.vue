@@ -12,7 +12,7 @@ export default {
   color: #fff;
   text-align: center;
   font-size: 40px;
-  background: url('../../assets/img/banner.png') no-repeat top;
+  background: url('~assets/img/banner.png') no-repeat top;
   background-size: cover;
   height: 680px;
   padding-top: 200px;

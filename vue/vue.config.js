@@ -1,9 +1,15 @@
 const webpack = require('webpack');
+const path = require('path');
 require('dotenv').config({ path: '../.env'});
 
 module.exports = {
   lintOnSave: false,
   configureWebpack: {
+    resolve: {
+      alias: {
+        'assets': path.resolve(__dirname, './src/assets'),
+      },
+    },
     plugins: [
       new webpack.DefinePlugin({
         'process.env': {

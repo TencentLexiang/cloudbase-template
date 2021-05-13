@@ -56,6 +56,17 @@
           }
         }
       },
+      "auth": {
+        "use": "@cloudbase/framework-plugin-auth",
+        "inputs": {
+          "configs": [
+            {
+              "platform": "NONLOGIN",
+              "status": "ENABLE"
+            }
+          ]
+        }
+      },
       "database": {
         "use": "@cloudbase/framework-plugin-database",
         "inputs": {
@@ -121,24 +132,6 @@
                   ]
                 }
               ]
-            },
-            {
-              "collectionName": "courses",
-              "createIndexes": [
-                {
-                  "name": "courses_lx_id_index",
-                  "unique": false,
-                  "keys": [
-                    {
-                      "name": "lx_id",
-                      "direction": "1"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "collectionName": "course_categories"
             }
           ]
         }
@@ -153,8 +146,7 @@
           "ignore": [],
           "envVariables": {
             "ENV_ID": "{{env.ENV_ID}}",
-            "REGION": "{{env.REGION}}",            
-            "PAGE_URL": "{{env.PAGE_URL}}",
+            "REGION": "{{env.REGION}}",
             "LX_SUITE_ID": "{{env.LX_SUITE_ID}}",
             "LX_AUTH_URL": "{{env.LX_AUTH_URL}}",
             "PERSISTENCE": "{{env.PERSISTENCE}}"

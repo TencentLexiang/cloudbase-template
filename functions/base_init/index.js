@@ -38,7 +38,7 @@ exports.main = async (event, context) => {
 
     let init_attributes = {
         "redirect_domain": page_doamin,
-        "manage_url": "https://" + page_doamin + "/courses?company_id=$COMPANY_ID$",
+        "manage_url": "https://" + page_doamin + "/admin?company_id=$COMPANY_ID$",
         "homepage": "https://" + page_doamin + "/home",
         "callback_url": "https://" + api_domain + "/suite_callback",
     };

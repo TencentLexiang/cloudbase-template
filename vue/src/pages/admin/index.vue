@@ -1,21 +1,16 @@
 <template>
   <div class="container admin-container">
-    <div>xxx公司</div>
-    <div>xxx</div>
+    <div>【{{ $company.name }}】公司</div>
+    <div>{{ $auth.currentUser.nickName }}</div>
     <el-button type="primary" @click="goToLx">进入乐享 <i class="el-icon-right"></i></el-button>
   </div>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      info: {},
-    };
-  },
   methods: {
     goToLx() {
-
+      window.open(`https://lexiangla.net/settings/apps?company_from=${this.$company.company_id}`);
     }
   },
 };

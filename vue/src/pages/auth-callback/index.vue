@@ -1,5 +1,5 @@
 <template>
-  <div>auth-callback</div>
+  <div class="container auth-callback-container">正在登录中...</div>
 </template>
 
 <script>
@@ -20,9 +20,7 @@ export default {
     console.log('base_login_user callback', response.result.data);
     await this.$auth.customAuthProvider().signIn(ticket);
 
-    lxStorage.setItem('companyId', company_attributes.id);
-
-    console.log('this.$auth', this.$auth);
+    lxStorage.setItem('company', JSON.stringify(company_attributes.auth_corp_info));
 
     const user = this.$auth.currentUser;
     user.update({
@@ -38,4 +36,12 @@ export default {
     });
   }
 }
-</script> 
+</script>
+
+<style lang="less" scoped>
+.auth-callback-container {
+  text-align: center;
+  padding-top: 180px;
+  font-size: 26px;
+}
+</style>

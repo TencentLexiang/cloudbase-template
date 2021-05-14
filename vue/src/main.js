@@ -27,8 +27,6 @@ const auth = app.auth({
 Vue.prototype.$app = app;
 Vue.prototype.$auth = auth;
 
-Vue.prototype.$company = { id: lxStorage.getItem('companyId') || '' };
-
 const router = new VueRouter({
   base: '/',
   mode: 'hash',
@@ -37,7 +35,11 @@ const router = new VueRouter({
 
 router.beforeEach(async (to, from, next) => {
   const { company_id: companyId } = to.query;
-  const loginCompanyId = Vue.prototype.$company.id;
+  
+  const loginCompany = JSON.parse(lxStorage.getItem('company') || '{}');
+  const loginCompanyId = loginCompany.company_id;
+
+  Vue.prototype.$company = loginCompany;
 
   if (location.search) {
     location.replace('/#' + location.pathname + location.search);

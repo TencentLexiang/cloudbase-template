@@ -39,6 +39,10 @@ router.beforeEach(async (to, from, next) => {
   const { company_id: companyId } = to.query;
   const loginCompanyId = Vue.prototype.$company.id;
 
+  if (location.search) {
+    location.replace('/#' + location.pathname + location.search);
+  }
+
   if (companyId) {
     if (loginCompanyId && companyId !== loginCompanyId) {
       lxStorage.clear();

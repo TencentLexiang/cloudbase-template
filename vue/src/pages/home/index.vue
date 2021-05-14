@@ -1,5 +1,8 @@
 <template>
-  <div class="welcome-container">腾讯乐享欢迎您！</div>
+  <div class="welcome-container">
+    <img :src="require('../../assets/img/banner.png')" />
+    <div class="tips">腾讯乐享欢迎您！</div>
+  </div>
 </template>
 
 <script>
@@ -9,12 +12,19 @@ export default {
 
 <style lang="less" scoped>
 .welcome-container {
-  color: #fff;
-  text-align: center;
-  font-size: 40px;
-  background: url('~assets/img/banner.png') no-repeat top;
-  background-size: cover;
-  height: 680px;
-  padding-top: 200px;
+  position: relative;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .tips {
+    position: absolute;
+    top: 40%;
+    left: 10%;
+    color: #fff;
+    font-size: 40px;
+  }
 }
 </style>

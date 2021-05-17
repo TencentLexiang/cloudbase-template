@@ -187,6 +187,9 @@
       "name": "base_init"
     },
     {
+      "name": "custom_apis"
+    },
+    {
       "name": "lx_apis",
       "envVariables": {
         "LX_SUITE_ID": "{{env.LX_SUITE_ID}}",

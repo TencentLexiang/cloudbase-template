@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@cloudbase/node-sdk": "^2.5.0",
+    "moment-timezone": "^0.5.33"
+  }
+}

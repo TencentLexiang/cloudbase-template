@@ -2,10 +2,10 @@ const axios = require('axios');
 
 exports.list = async(attributes, headers) =>
 {
-    const {target_type, parent_id} = attributes;
-    return await axios.get(process.env.LX_API_URL + "v1/categories", {
+    const {per_page, page, department_id, fetch_child} = attributes;
+    return await axios.get(process.env.LX_API_URL + "v1/contact/user/list", {
         "params": {
-            target_type, parent_id
+            per_page, page, department_id, fetch_child
         },
         "headers": {
             "Authorization": "Bearer " + headers.corp_token

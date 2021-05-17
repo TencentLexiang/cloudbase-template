@@ -5,8 +5,11 @@ const app = cloudBase.init({
     env: process.env.ENV_ID
 });
 const db = app.database();
+const staff = require('./staff.js');
 const category = require('./category.js');
 const course = require('./course.js');
+const user = require('./user.js');
+const department = require('./department.js');
 
 exports.main = async(event, context) => {
     const method = event.method ? event.method : "get_suite_access_token";

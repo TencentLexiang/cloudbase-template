@@ -7,7 +7,7 @@
 
 <style lang="less" scoped>
 .error-container {
-  padding-top: 180px;
+  padding-top: 100px;
   text-align: center;
 
   img {

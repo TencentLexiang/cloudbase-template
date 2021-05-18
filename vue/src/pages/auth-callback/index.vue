@@ -41,7 +41,7 @@ export default {
 <style lang="less" scoped>
 .auth-callback-container {
   text-align: center;
-  padding-top: 180px;
+  padding-top: 100px;
   font-size: 26px;
 }
 </style>

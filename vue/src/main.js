@@ -41,9 +41,9 @@ router.beforeEach(async (to, from, next) => {
 
   Vue.prototype.$company = loginCompany;
 
-  if (location.search) {
-    location.replace('/#' + location.pathname + location.search);
-  }
+  // if (location.search) {
+  //   location.replace('/#' + location.pathname + location.search);
+  // }
 
   if (companyId) {
     if (loginCompanyId && companyId !== loginCompanyId) {
@@ -62,7 +62,7 @@ router.beforeEach(async (to, from, next) => {
 });
 
 function loginUrl(company_id = null) {
-  const redirect_uri = `${location.origin}/auth-callback`;
+  const redirect_uri = `${location.origin}/#/auth-callback`;
   let params = `suite_id=${window._tcbEnv.LX_SUITE_ID || process.env.LX_SUITE_ID}&redirect_uri=${encodeURIComponent(redirect_uri)}&response_type=code&scope=snsapi_userinfo`;
 
   if (company_id) {

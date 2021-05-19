@@ -57,8 +57,12 @@ export default {
       this.download('.env', fileText);
     },
     download(filename, text) {
-      var element = document.createElement('a');
-      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+      const element = document.createElement('a');
+      const blob = new Blob([text], {
+          type: 'text/plain'
+      });
+      element.setAttribute('href', URL.createObjectURL(blob));
+      // element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
       element.setAttribute('download', filename);
 
       element.style.display = 'none';

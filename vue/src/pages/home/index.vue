@@ -7,10 +7,14 @@
     </div>
     <div class="right">
       <div class="mb">
-        <img :src="require('../../assets/img/lx-logo.png')" /> 腾讯乐享
+        <a href="https://lexiangla.net/settings" target="_blank">
+          <img :src="require('../../assets/img/lx-logo.png')" /> 腾讯乐享
+        </a>
       </div>
       <div>
-        <img :src="require('../../assets/img/cloudbase-logo.svg')" width="50" /> 腾讯云开发
+        <a href="https://console.cloud.tencent.com/tcb/env/overview?envId=once-test-3gsc1t9n1093c388" target="_blank">
+          <img :src="require('../../assets/img/cloudbase-logo.svg')" width="50" /> 云开发
+        </a>
       </div>
     </div>
   </div>

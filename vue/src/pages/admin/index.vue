@@ -3,16 +3,19 @@
     <div class="left">
       <div class="font-lg mb" v-if="$auth.currentUser">你好，{{ $auth.currentUser.nickName }}{{ $auth.currentUser.gender === 'MALE' ? '先生' : '女士' }}</div>
       <div class="font-sm mb">欢迎登录【{{ $company.name }}】公司云开发管理后台</div>
-      <div>{{userInfo}}</div>
-      <a href="javascript:void(0);" class="btn mr" @click="getUserInfo">获取用户信息</a>
-      <a href="https://lexiangla.net/settings" target="_blank" class="btn">进入乐享</a>
+      <div class="font-sm mb" v-if="userInfo.name">影响力：{{userInfo.influence}}，积分：{{userInfo.point_total}}</div>
+      <a href="javascript:void(0);" class="btn" @click="getUserInfo" v-else>获取用户信息</a>
     </div>
     <div class="right">
       <div class="mb">
-        <img :src="require('../../assets/img/lx-logo.png')" /> 腾讯乐享
+        <a href="https://lexiangla.net/settings" target="_blank">
+          <img :src="require('../../assets/img/lx-logo.png')" /> 腾讯乐享
+        </a>
       </div>
       <div>
-        <img :src="require('../../assets/img/cloudbase-logo.svg')" width="50" /> 腾讯云开发
+        <a href="https://console.cloud.tencent.com/tcb/env/overview?envId=once-test-3gsc1t9n1093c388" target="_blank">
+          <img :src="require('../../assets/img/cloudbase-logo.svg')" width="50" /> 云开发
+        </a>
       </div>
     </div>
   </div>
@@ -74,12 +77,8 @@ export default {
     margin-bottom: 20px;
   }
 
-  .mr {
-    margin-right: 20px;
-  }
-
   .btn {
-    padding: 10px 50px;
+    padding: 6px 40px;
     font-size: 18px;
     color: #fff;
     background-color: hsl(210, 100%, 63%);

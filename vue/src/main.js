@@ -41,21 +41,20 @@ router.beforeEach(async (to, from, next) => {
 
   Vue.prototype.$company = loginCompany;
 
-  // if (location.search) {
-  //   location.replace('/#' + location.pathname + location.search);
-  // }
+  const loginState = await Vue.prototype.$auth.getLoginState();
+  console.log('loginState, loginUrl', loginState, loginUrl(companyId));
 
   if (companyId) {
     if (loginCompanyId && companyId !== loginCompanyId) {
       lxStorage.clear();
     }
 
-    const loginState = await Vue.prototype.$auth.getLoginState();
-    console.log('loginState, loginUrl', loginState, loginUrl(companyId));
     if (!loginState) {
       window.location.href = loginUrl(companyId);
       return;
     }
+  } else if (!loginState && to.name !== 'home') {
+    next('/');
   }
   
   next();

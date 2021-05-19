@@ -1,7 +1,7 @@
 <template>
   <div class="container admin-container">
     <div class="left">
-      <div class="font-lg mb" v-if="$auth.currentUser">你好，{{ $auth.currentUser.nickName }}{{ $auth.currentUser.gender === 'MALE' ? '男士' : '女士' }}</div>
+      <div class="font-lg mb" v-if="$auth.currentUser">你好，{{ $auth.currentUser.nickName }}{{ $auth.currentUser.gender === 'MALE' ? '先生' : '女士' }}</div>
       <div class="font-sm mb">欢迎登录【{{ $company.name }}】公司云开发管理后台</div>
       <div>{{userInfo}}</div>
       <a href="javascript:void(0);" class="btn mr" @click="getUserInfo">获取用户信息</a>

@@ -4,6 +4,7 @@ const app = cloudBase.init({
     env: process.env.ENV_ID,
 });
 const auth = app.auth();
+const db = app.database();
 let user;
 exports.main = async(event, context) => {
 
@@ -31,11 +32,13 @@ async function get_current_staff() {
         name: "lx_apis",
         data: {
             "method": "staff.show",
-            "attributs": {
+            "company_id": user.company_id,
+            "staff_id": user.staff_id,
+            "attributes": {
                 id: user.staff_id
             }
         }
-    }).then((res) => {
-        return res.result;
+    }).then(function(response) {
+        return response.result.data.data.attributes;
     });
 }

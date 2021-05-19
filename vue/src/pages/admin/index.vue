@@ -4,7 +4,8 @@
       <div class="font-lg mb" v-if="$auth.currentUser">你好，{{ $auth.currentUser.nickName }}{{ $auth.currentUser.gender === 'MALE' ? '先生' : '女士' }}</div>
       <div class="font-sm mb">欢迎登录【{{ $company.name }}】公司云开发管理后台</div>
       <div class="font-sm mb" v-if="userInfo.name">影响力：{{userInfo.influence}}，积分：{{userInfo.point_total}}</div>
-      <a href="javascript:void(0);" class="btn" @click="getUserInfo" v-else>获取用户信息</a>
+      <a href="javascript:void(0);" class="btn mr" @click="getUserInfo" v-else>获取用户信息</a>
+      <a href="javascript:void(0);" class="btn" @click="getEnvFile">获取环境配置文件</a>
     </div>
     <div class="right">
       <div class="mb">
@@ -37,14 +38,36 @@ export default {
         },
       });
       this.userInfo = result;
-      console.log('response----', result);
-      await this.$app.callFunction({
+      console.log('getUserInfo----', result);
+    },
+    async getEnvFile() {
+      const { result } = await this.$app.callFunction({
         name: 'custom_apis',
         data: {
           method: 'get_env'
         },
       });
-    }
+      console.log('getEnvInfo----', result);
+
+      let fileText = '';
+      Object.keys(result).forEach(key => {
+        fileText += `${key}=${result[key]}\n`;
+      });
+      console.log('file:', '\n', fileText);
+      this.download('.env', fileText);
+    },
+    download(filename, text) {
+      var element = document.createElement('a');
+      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+      element.setAttribute('download', filename);
+
+      element.style.display = 'none';
+      document.body.appendChild(element);
+
+      element.click();
+
+      document.body.removeChild(element);
+    },
   },
 };
 </script>
@@ -75,6 +98,10 @@ export default {
 
   .mb {
     margin-bottom: 20px;
+  }
+
+  .mr {
+    margin-right: 20px;
   }
 
   .btn {

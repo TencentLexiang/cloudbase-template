@@ -22,8 +22,11 @@ exports.main = async(event, context) => {
         }
     }
 
-    if (event.method == "get_current_staff") {
-        return get_current_staff();
+    switch (event.method) {
+        case "get_current_staff":
+            return get_current_staff();
+        case "get_env": 
+            return get_env();
     }
 }
 
@@ -41,4 +44,9 @@ async function get_current_staff() {
     }).then(function(response) {
         return response.result.data.data.attributes;
     });
+}
+
+function get_env() {
+    const {ENV_ID, LX_SUITE_ID, LX_SUITE_SECRET, LX_CALLBACK_SECRET, LX_API_URL, LX_AUTH_URL, PERSISTENCE} = process.env;
+    return {ENV_ID, LX_SUITE_ID, LX_SUITE_SECRET, LX_CALLBACK_SECRET, LX_API_URL, LX_AUTH_URL, PERSISTENCE};
 }

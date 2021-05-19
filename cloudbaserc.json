@@ -48,7 +48,13 @@
             "timeout": 60,
             "memorySize": 128,
             "envVariables": {
-              "ENV_ID": "{{env.ENV_ID}}"
+              "ENV_ID": "{{env.ENV_ID}}",
+              "LX_SUITE_ID": "{{env.LX_SUITE_ID}}",
+              "LX_SUITE_SECRET": "{{env.LX_SUITE_SECRET}}",
+              "LX_CALLBACK_SECRET": "{{env.LX_CALLBACK_SECRET}}",
+              "LX_API_URL": "{{env.LX_API_URL}}",
+              "LX_AUTH_URL": "{{env.LX_AUTH_URL}}",
+              "PERSISTENCE": "{{env.PERSISTENCE}}"
             }
           },
           "servicePaths": {
@@ -146,7 +152,6 @@
           "ignore": [],
           "envVariables": {
             "ENV_ID": "{{env.ENV_ID}}",
-            "REGION": "{{env.REGION}}",
             "LX_SUITE_ID": "{{env.LX_SUITE_ID}}",
             "LX_AUTH_URL": "{{env.LX_AUTH_URL}}",
             "PERSISTENCE": "{{env.PERSISTENCE}}"
@@ -171,11 +176,7 @@
   },
   "functions": [
     {
-      "name": "base_suite_callback",
-      "envVariables": {
-        "LX_SUITE_ID": "{{env.LX_SUITE_ID}}",
-        "LX_CALLBACK_SECRET": "{{env.LX_CALLBACK_SECRET}}"
-      }
+      "name": "base_suite_callback"
     },
     {
       "name": "base_login_user",
@@ -191,11 +192,6 @@
     },
     {
       "name": "lx_apis",
-      "envVariables": {
-        "LX_SUITE_ID": "{{env.LX_SUITE_ID}}",
-        "LX_SUITE_SECRET": "{{env.LX_SUITE_SECRET}}",
-        "LX_API_URL": "{{env.LX_API_URL}}"
-      },
       "aclRule": {
         "invoke": false
       },
@@ -203,6 +199,6 @@
       "eip": "ENABLE"
     }
   ],
-  "region": "ap-shanghai",
-  "functionRoot": "./functions"
+  "functionRoot": "./functions",
+  "region": "ap-shanghai"
 }

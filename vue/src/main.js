@@ -18,7 +18,7 @@ Vue.config.productionTip = false;
 
 const app = cloudbase.init({
   env: window._tcbEnv.TCB_ENV_ID || process.env.ENV_ID,
-  region: window._tcbEnv.REGION || process.env.REGION,
+  region: window._tcbEnv.REGION,
   timeout: 60000
 });
 const auth = app.auth({

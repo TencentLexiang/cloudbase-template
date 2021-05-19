@@ -35,6 +35,12 @@ export default {
       });
       this.userInfo = result;
       console.log('response----', result);
+      await this.$app.callFunction({
+        name: 'custom_apis',
+        data: {
+          method: 'get_env'
+        },
+      });
     }
   },
 };

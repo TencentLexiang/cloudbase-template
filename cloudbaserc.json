@@ -192,9 +192,6 @@
     },
     {
       "name": "lx_apis",
-      "aclRule": {
-        "invoke": false
-      },
       "publicNet": "ENABLE",
       "eip": "ENABLE"
     }

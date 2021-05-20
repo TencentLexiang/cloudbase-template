@@ -14,7 +14,7 @@
         </a>
       </div>
       <div>
-        <a href="https://console.cloud.tencent.com/tcb/env/overview?envId=once-test-3gsc1t9n1093c388" target="_blank">
+        <a :href="`https://console.cloud.tencent.com/tcb/env/overview?envId=${$tcbEnvID}`" target="_blank">
           <img :src="require('../../assets/img/cloudbase-logo.svg')" width="50" /> 云开发
         </a>
       </div>
@@ -59,7 +59,7 @@ export default {
     download(filename, text) {
       const element = document.createElement('a');
       const blob = new Blob([text], {
-          type: 'text/plain'
+          type: 'application/x-envoy'
       });
       element.setAttribute('href', URL.createObjectURL(blob));
       // element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));

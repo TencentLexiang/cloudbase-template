@@ -16,8 +16,9 @@ Vue.use(ElementUI);
 
 Vue.config.productionTip = false;
 
+Vue.prototype.$tcbEnvID = window._tcbEnv.TCB_ENV_ID || process.env.ENV_ID;
 const app = cloudbase.init({
-  env: window._tcbEnv.TCB_ENV_ID || process.env.ENV_ID,
+  env: Vue.prototype.$tcbEnvID,
   region: window._tcbEnv.REGION,
   timeout: 60000
 });

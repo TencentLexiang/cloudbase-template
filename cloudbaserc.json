@@ -46,7 +46,7 @@
             "runtime": "Nodejs10.15",
             "handler": "index.main",
             "timeout": 60,
-            "memorySize": 128,
+            "memorySize": 1024,
             "envVariables": {
               "ENV_ID": "{{env.ENV_ID}}",
               "LX_SUITE_ID": "{{env.LX_SUITE_ID}}",
@@ -186,6 +186,9 @@
     },
     {
       "name": "base_init"
+    },
+    {
+      "name": "base_sync_contact"
     },
     {
       "name": "custom_apis"

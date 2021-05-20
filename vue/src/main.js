@@ -35,6 +35,11 @@ const router = new VueRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
+  if (to.name == 'authCallback') {
+    next();
+    return;
+  }
+
   const { company_id: companyId } = to.query;
   
   const loginCompany = JSON.parse(lxStorage.getItem('company') || '{}');

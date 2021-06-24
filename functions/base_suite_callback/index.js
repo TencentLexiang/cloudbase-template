@@ -30,7 +30,7 @@ exports.main = async (event, context) => {
             app.callFunction({
                 name: "lx_apis",
                 data: {
-                    "method": "get_corp_info",
+                    "method": "get_permanent_code",
                     "auth_code": body.attributes.auth_code
                 }
             })

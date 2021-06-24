@@ -18,8 +18,8 @@ exports.main = async(event, context) => {
             return await get_suite_access_token(event.refresh);
         case "get_corp_token":
             return await get_corp_token(event.company_id, event.refresh);
-        case "get_corp_info":
-            return await get_corp_info(event.auth_code);
+        case "get_permanent_code":
+            return await get_permanent_code(event.auth_code);
         case "get_user_info":
             return await get_user_info(event.code);
         case "init_config":
@@ -101,9 +101,9 @@ const get_suite_access_token = async(refresh = false) => {
     });
 }
 
-const get_corp_info = async(auth_code) => {
+const get_permanent_code = async(auth_code) => {
     const suite_access_token = await get_suite_access_token();
-    return await axios.post(process.env.LX_API_URL + "service/get_corp_info?suite_access_token=" + suite_access_token, {
+    return await axios.post(process.env.LX_API_URL + "service/get_permanent_code?suite_access_token=" + suite_access_token, {
         "auth_code": auth_code
     })
     .then(function(response) {

@@ -21,13 +21,13 @@ exports.main = async (event, context) => {
         await db.collection("lx_suite_callback_logs").add(body);
 
         if (body.action === "service/suite_ticket") {
-            db.collection("lx_suites").doc("suite_ticket").set({
+            await db.collection("lx_suites").doc("suite_ticket").set({
                 "value": body.attributes.suite_ticket,
                 "expires_in": 1800,
                 "created_at": moment().tz("Asia/Shanghai").valueOf()
             });
         } else if (body.action === "service/create_auth") {
-            app.callFunction({
+            await app.callFunction({
                 name: "lx_apis",
                 data: {
                     "method": "get_permanent_code",

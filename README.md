@@ -8,7 +8,7 @@
 记住**应用id**，**应用secret**，**接收乐享回调secret**三个字段值
 
 ## 第二步：点击一键部署按钮
-[![](https://main.qcloudimg.com/raw/67f5a389f1ac6f3b4d04c7256438e44f.svg)](https://console.cloud.tencent.com/tcb/env/index?action=CreateAndDeployCloudBaseProject&appUrl=https%3A%2F%2Fgithub.com%2Fmoomnng%2Flxservice&branch=master)
+[![](https://main.qcloudimg.com/raw/67f5a389f1ac6f3b4d04c7256438e44f.svg)](https://console.cloud.tencent.com/tcb/env/index?action=CreateAndDeployCloudBaseProject&appUrl=https%3A%2F%2Fgithub.com%2FTencentLexiang%2Fcloudbase-template&branch=master)
 
 ## 第三步：创建cloudbase环境
 根据第一步获取的内容，填充必填字段，等待初始化完成即完成部署

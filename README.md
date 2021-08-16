@@ -30,4 +30,4 @@ PERSISTENCE=local
 方式2：一键部署后，公司授权进入管理后台，可直接下载当前项目的环境变量文件，修改文件名为.env放在根目录即可
 ![](https://lexiang4public-10029162.cos.ap-shanghai.myqcloud.com/wiki/api/cloudbase3.png)
 ## 第三步：参考[云开发开发指南](https://cloud.tencent.com/document/product/876/46798)进行开发
-## 第四步：参考[Cloudbase CLI说明](https://lexiang4public-10029162.cos.ap-shanghai.myqcloud.com/wiki/api/cloudbase3.png)，进行部署
+## 第四步：参考[Cloudbase CLI说明](https://docs.cloudbase.net/cli-v1/quick-start.html#3--bu-shu)，进行部署

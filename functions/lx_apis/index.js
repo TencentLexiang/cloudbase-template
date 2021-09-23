@@ -35,8 +35,6 @@ exports.main = async(event, context) => {
             return await get_user_info(event.code);
         case "init_config":
             return await init_config(event.attributes);
-        case "get_user_info_suit":
-            return await get_user_info_suit();
     }
     const staff_id = event.staff_id;
     const corp_token = await get_corp_token(event.company_id);
@@ -165,12 +163,4 @@ const init_config = async(attributes) => {
         console.log(err.response.data);
         throw err;
     });
-}
-
-const get_user_info_suit = async () => {
-  const { userInfo } = await auth.getEndUserInfo();
-  const user = await db.collection("users").doc(userInfo.customUserId).get().then(function(res) {
-      return res.data[0];
-  });
-  return user;
 }

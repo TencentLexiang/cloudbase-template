@@ -4,12 +4,23 @@ const moment = require('moment-timezone');
 const app = cloudBase.init({
     env: process.env.ENV_ID
 });
+const auth = app.auth();
 const db = app.database();
 const staff = require('./staff.js');
 const category = require('./category.js');
 const course = require('./course.js');
 const user = require('./user.js');
 const department = require('./department.js');
+const cosUpload = require('./cos_upload.js');
+
+const router = {
+  staff,
+  category,
+  course,
+  user,
+  department,
+  cosUpload
+}
 
 exports.main = async(event, context) => {
     const method = event.method ? event.method : "get_suite_access_token";
@@ -27,8 +38,12 @@ exports.main = async(event, context) => {
     }
     const staff_id = event.staff_id;
     const corp_token = await get_corp_token(event.company_id);
-    const func = eval(method)
-    return func(event.attributes ? event.attributes : {}, {staff_id, corp_token});
+    const [file, func] = method.split('.');
+    if (func) {
+      return router[file][func](event.attributes ? event.attributes : {}, {staff_id, corp_token});
+    } else {
+      return router[file](event.attributes ? event.attributes : {}, {staff_id, corp_token});
+    }
 }
 
 const get_corp_token = async(company_id, refresh = false) => {

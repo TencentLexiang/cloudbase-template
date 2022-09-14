@@ -4,7 +4,7 @@
 
 # 一键部署
 ## 第一步：在乐享创建第三方应用
-![](https://lexiang4public-10029162.cos.ap-shanghai.myqcloud.com/wiki/api/cloudbase1.jpg)
+![](https://image-pub.lexiang-asset.com/wiki/api/cloudbase1.jpg)
 记住**应用id**，**应用secret**，**接收乐享回调secret**三个字段值
 
 ## 第二步：点击一键部署按钮
@@ -12,7 +12,7 @@
 
 ## 第三步：创建cloudbase环境
 根据第一步获取的内容，填充必填字段，等待初始化完成即完成部署
-![](https://lexiang4public-10029162.cos.ap-shanghai.myqcloud.com/wiki/api/cloudbase2.png)
+![](https://image-pub.lexiang-asset.com/wiki/api/cloudbase2.png)
 
 # 开发
 ## 第一步：克隆代码到本地
@@ -28,6 +28,6 @@ LX_AUTH_URL=https://lexiangla.com/connect/oauth2/authorize
 PERSISTENCE=local
 ```
 方式2：一键部署后，公司授权进入管理后台，可直接下载当前项目的环境变量文件，修改文件名为.env放在根目录即可
-![](https://lexiang4public-10029162.cos.ap-shanghai.myqcloud.com/wiki/api/cloudbase3.png)
+![](https://image-pub.lexiang-asset.com/wiki/api/cloudbase3.png)
 ## 第三步：参考[云开发开发指南](https://cloud.tencent.com/document/product/876/46798)进行开发
 ## 第四步：参考[Cloudbase CLI说明](https://docs.cloudbase.net/cli-v1/quick-start.html#3--bu-shu)，进行部署
